@@ -50,7 +50,7 @@ const RegisterForm = (props: Props) => {
   const onSubmit = async (data: any) => {
     setsubmitted(true)
 
-    const apiResponse = await fetch('http://localhost:5000/api/auth/tempp',{
+    const apiResponse = await fetch('/api/auth/signup',{
       method:'POST',
       headers:{
         Accept:'application.json',
