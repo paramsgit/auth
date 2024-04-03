@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 type Props = {};
 
 const FormSchema = z.object({
@@ -49,23 +50,27 @@ const RegisterForm = (props: Props) => {
   });
   const onSubmit = async (data: any) => {
     setsubmitted(true)
+try {
+  const apiResponse = await fetch('/api/auth/signup',{
+    method:'POST',
+    headers:{
+      Accept:'application.json',
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify(data)
+  })
 
-    const apiResponse = await fetch('/api/auth/signup',{
-      method:'POST',
-      headers:{
-        Accept:'application.json',
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify(data)
-    })
-
-    const response=await apiResponse.json()
-    console.log(response)
+  const response=await apiResponse.json()
+  console.log(response)
+} catch (error) {
+  console.log(error)
+}
+    
     setsubmitted(false)
 
   };
   return (
-    <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+    <div className="isolate bg-white px-6 pt-24 pb-6 lg:px-8">
       <div
         className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
         aria-hidden="true"
@@ -80,12 +85,17 @@ const RegisterForm = (props: Props) => {
       </div>
       <div className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          User Registration
+          Create a new account
         </h2>
+        <p className="text-base p-2">
+          Already have an account?
+        <Link className="text-blue-600 mx-2"  href='/auth'>Sign In </Link>
+        </p>
+        
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mx-auto mt-16 max-w-xl sm:mt-20"
+        className="mx-auto mt-16 max-w-xl sm:mt-16"
       >
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <div>
