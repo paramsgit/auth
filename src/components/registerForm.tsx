@@ -70,7 +70,7 @@ try {
 
   };
   return (
-    <div className="isolate bg-white px-6 pt-24 pb-6 lg:px-8">
+    <div className="isolate bg-white px-6 pt-16 pb-6 lg:px-8">
       <div
         className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
         aria-hidden="true"
@@ -89,15 +89,15 @@ try {
         </h2>
         <p className="text-base p-2">
           Already have an account?
-        <Link className="text-blue-600 mx-2"  href='/auth'>Sign In </Link>
+        <Link className="text-blue-600 mx-2" onClick={()=>{console.log("going to")}} href='/auth'>Sign In </Link>
         </p>
         
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mx-auto mt-16 max-w-xl sm:mt-16"
+        className="mx-auto mt-16 max-w-xl sm:mt-12"
       >
-        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-2">
           <div>
             <label
               htmlFor="first_name"

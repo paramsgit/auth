@@ -61,7 +61,7 @@ const SigninForm = (props: Props) => {
       };
 
   return (
-    <div className="isolate bg-white px-6 pt-24 lg:px-8">
+    <div className="isolate bg-white px-6 pb-6 pt-24 lg:px-8">
       <div
         className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
         aria-hidden="true"
