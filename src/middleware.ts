@@ -16,4 +16,23 @@ if(pathname == "/"){
 if(pathname == "/auth"){
     if(session) return NextResponse.redirect(`${origin}`)
 }
+
+const userToken = req.cookies.get('next-auth.session-token')?.value;
+console.log(userToken)
+console.log(session)
+console.log("here i am")
+if(!userToken) {
+   return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/auth`)
+}
+
+else {
+//  const userData
+}
+
+}
+
+
+
+export const config = {
+  matcher:[ '/api/:path*','/']
 }
