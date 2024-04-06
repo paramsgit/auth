@@ -51,7 +51,7 @@ const SigninForm = (props: Props) => {
         console.log(res.error)
        }
        else{
-        return router.push(callbackUrl) 
+        return router.push("/") 
        }
        } catch (error) {
         console.log(error)

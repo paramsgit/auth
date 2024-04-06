@@ -1,5 +1,6 @@
 import { NextPageContext } from "next";
 import { getSession, useSession,signIn,signOut } from "next-auth/react";
+import Layout from "./layout";
 
 
 export default function Home() {
@@ -8,12 +9,7 @@ const {data:session}=useSession();
 console.log(session)
 
   return (
-   <h1 className="text-red-500">
-    Hello world
-
-    <button onClick={()=>signIn()}>Signin</button>
-    <button onClick={()=>signOut()}>signOut</button>
-   </h1>
+  <Layout/>
   );
 }
 
