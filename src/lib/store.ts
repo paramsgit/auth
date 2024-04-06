@@ -2,13 +2,17 @@ import { create } from 'zustand'
 
 interface BearState {
   bears: number;
-  
-//   increase: (by: number) => void;
+  TrsForm:boolean;
+  showTrsForm:()=>void;
+  increase: () => void;
+
 }
 
-const useBearStore = create<BearState>()((set) => ({
+export const useUIStore = create<BearState>()((set) => ({
   bears: 0,
-//   increase: (by) => set((state) => ({ bears: state.bears + by })),
+  TrsForm:false,
+  increase: () => set((state) => ({ bears: state.bears + 1 })),
+  showTrsForm: () => set((state) => ({ TrsForm: !state.TrsForm })),
 
 
 }))
