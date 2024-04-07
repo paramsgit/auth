@@ -33,7 +33,7 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
     </div>
     <div className="right w-full md:w-1/2 flex justify-center pt-10">
       <div className='rounded-3xl bg-gray-50 max-w-sm sm:max-w-sm w-full p-6'>
-        <div className='m-4 rounded-full bg-white px-4 py-3' >
+        <div className='m-4 rounded-full bg-white px-4 py-3' style={{boxShadow:'1px 1px 5px #e0e0e0d9'}}>
           <div className='flex items-center'>
             <div>
               <img className='w-10 h-19' src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg" alt="" />
@@ -46,9 +46,10 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
           </div>
         </div>
         <div className="availablebalance px-4">
+          <div>
           <p className='text-xs text-gray-700 Noto'>Balance:</p>
-          <h1 className='text-3xl Noto py-1'>₹500</h1>
-         
+          <h1 className='text-3xl Noto py-1 font-bold text-gray-800'>₹500</h1>
+          </div>
         </div>
         <div className='graph'>
  <Graph/>

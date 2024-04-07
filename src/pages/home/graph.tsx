@@ -8,6 +8,10 @@ Chart.register(CategoryScale);
 Chart.defaults.scale.grid.drawOnChartArea=false;
 const Graph: React.FunctionComponent<IGraphProps> = (props) => {
     
+    // const mdata=[
+    //     {debit:true,amount:200,}
+    // ]
+
     const labels = ["j", "f", "mx", "a", "m", "j", "a", "m", "j"];
     const data = {
         labels: labels,
