@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useUIStore } from '@/lib/store';
 import TransactionForm from './transactionForm';
+import Graph from './graph';
 interface IFrontProps {
 }
 
@@ -30,7 +31,30 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
             <TransactionForm/>
         </div>
     </div>
-    <div className="right w-full md:w-1/2"></div>
+    <div className="right w-full md:w-1/2 flex justify-center pt-10">
+      <div className='rounded-3xl bg-gray-50 max-w-sm sm:max-w-sm w-full p-6'>
+        <div className='m-4 rounded-full bg-white px-4 py-3' >
+          <div className='flex items-center'>
+            <div>
+              <img className='w-10 h-19' src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg" alt="" />
+              
+            </div>
+            <div className='flex flex-col mx-4'>
+              <h1 className='text-gray-800 text-sm font-[Ubuntu]'>Paramveer Singh</h1>
+              <h2 className='text-gray-500 text-xs'>param1@gmasil.com</h2>
+            </div>
+          </div>
+        </div>
+        <div className="availablebalance px-4">
+          <p className='text-xs text-gray-700 Noto'>Balance:</p>
+          <h1 className='text-3xl Noto py-1'>₹500</h1>
+         
+        </div>
+        <div className='graph'>
+ <Graph/>
+        </div>
+      </div>
+    </div>
   </div>
   </>;
 };
