@@ -2,7 +2,7 @@
 import { decode } from "next-auth/jwt";
 import User from "@/models/User";
 import { NextRequest,NextResponse } from "next/server";
-
+import connectDb from "@/utils/connectDb";
 
 export const verifyToken=async(props:string)=>{
     const JWT_SECRET=process.env.NEXTAUTH_SECRET
@@ -15,6 +15,7 @@ export const verifyToken=async(props:string)=>{
     }
 
     try {
+        await connectDb()
        const data=await decode({token:userToken,secret:JWT_SECRET}) 
        if(!data?.email)
             return ({message:"please Login",status:401,user:null})

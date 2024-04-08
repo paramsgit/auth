@@ -51,11 +51,6 @@ input[type=number] {
   margin-top: -14rem;
 }
 
-/* @keyframes moveUp {
-  from {
-    margin-top: 0;
-  }
-  to {
-    margin-top: -14rem;
-  }
-} */
+.userIdInput:focus+.bigSugg{
+opacity: 1;
+}

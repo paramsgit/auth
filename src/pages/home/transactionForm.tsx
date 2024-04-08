@@ -26,7 +26,17 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = (props) 
 <form className="max-w-sm my-4 md:my-8 p-8 rounded-xl bg-stone-100 dark:bg-zinc-900">
   <div className="mb-5">
     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Id of Receiver</label>
-    <input type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" value={ReceiverId} onChange={(e)=>{setReceiverId(e.target.value)}} required />
+    <input type="email" id="email" className="userIdInput bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" value={ReceiverId} onChange={(e)=>{setReceiverId(e.target.value)}} role="presentation" autoComplete='off' required />
+  
+  <div className={`bg-green-700 absolute text-white p-4 opacity-0 bigSugg`}>
+<ul>
+ <li className='m-1 cursor-pointer' onClick={()=>setReceiverId("ram@gmail.com")}>ram@gmail.com</li>
+ <li className='m-1 cursor-pointer' onClick={()=>setReceiverId("ram2@gmail.com")}>ram2@gmail.com</li>
+ <li className='m-1 cursor-pointer' onClick={()=>setReceiverId("ra3m@gmail.com")}>ram3@gmail.com</li>
+ <li className='m-1 cursor-pointer' onClick={()=>setReceiverId("ram4@gmail.com")}>ram4@gmail.com</li>
+</ul>
+
+  </div>
   </div>
   <div className="mb-5">
     <label htmlFor="amount" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Amount</label>

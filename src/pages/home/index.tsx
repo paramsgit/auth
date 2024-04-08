@@ -1,4 +1,5 @@
-import * as React from 'react';
+import React,{useEffect, useState} from 'react';
+import { useSession } from 'next-auth/react';
 import { useUIStore } from '@/lib/store';
 import TransactionForm from './transactionForm';
 import Graph from './graph';
@@ -6,11 +7,19 @@ interface IFrontProps {
 }
 
 const Front: React.FunctionComponent<IFrontProps> = (props) => {
-  
+  const { data: session } = useSession();
+  const [sessionData,setsessionData]=useState(session)
   const { TrsForm, showTrsForm } = useUIStore(state => ({
     TrsForm: state.TrsForm,
     showTrsForm: state.showTrsForm,
   }));
+  useEffect(() => {
+    if(session){
+      console.log("sess",session)
+    }
+  
+   
+  }, [])
   
   return <>
   <div className='flex flex-col-reverse md:flex-row w-full '>
@@ -36,12 +45,12 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
         <div className='m-4 rounded-full bg-white px-4 py-3' style={{boxShadow:'1px 1px 5px #e0e0e0d9'}}>
           <div className='flex items-center'>
             <div>
-              <img className='w-10 h-19' src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg" alt="" />
+              <img className='w-10 h-19 rounded-full' src={session?.user?.image?session?.user?.image:""} alt="" />
               
             </div>
-            <div className='flex flex-col mx-4'>
-              <h1 className='text-gray-800 text-sm font-[Ubuntu]'>Paramveer Singh</h1>
-              <h2 className='text-gray-500 text-xs'>param1@gmasil.com</h2>
+            <div className='flex flex-col mx-3'>
+              <h1 className='text-gray-800 text-sm font-[Ubuntu]'>{session?.user?.name}</h1>
+              <h2 className='text-gray-500 text-xs'>{session?.user?.email}</h2>
             </div>
           </div>
         </div>
@@ -52,7 +61,7 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
           </div>
         </div>
         <div className='graph'>
- <Graph/>
+        <Graph/>
         </div>
       </div>
     </div>
