@@ -12,6 +12,8 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = (props) 
       if(amount){
         setamountInWords(numberToText.convertToText(amount,{case:"upperCase"}))
       }else{setamountInWords("")}
+
+      const 
     
     }, [amount])
 
