@@ -50,7 +50,3 @@ input[type=number] {
 .animateMoveUp{
   margin-top: -14rem;
 }
-
-.userIdInput:focus+.bigSugg{
-opacity: 1;
-}

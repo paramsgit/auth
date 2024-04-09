@@ -23,7 +23,7 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
   
   return <>
   <div className='flex flex-col-reverse md:flex-row w-full '>
-    <div className="left w-full md:w-1/2 md:p-10">
+    <div className="left w-full md:w-1/2 md:p-10 md:pl-24">
         <div className={`heading px-4 md:px-10 overflow-hidden`}>
           <div className={`transition-all duration-700 ease-linear ${TrsForm ? "animateMoveUp" :"my-4 md:my-10"}`}>
             <h1 className={`${TrsForm?"opacity-0":""} transition-all duration-300 ease-in-out Noto text-3xl font-bold text-gray-900 dark:text-white mb-1`}>Paytm</h1>
@@ -40,9 +40,9 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
             <TransactionForm/>
         </div>
     </div>
-    <div className="right w-full md:w-1/2 flex justify-center pt-10">
+    <div className="right w-full md:w-1/2 flex justify-center items-center transition-all duration-500 ease-linear pt-10">
       <div className='rounded-3xl bg-gray-50 max-w-sm sm:max-w-sm w-full p-6'>
-        <div className='m-4 rounded-full bg-white px-4 py-3' style={{boxShadow:'1px 1px 5px #e0e0e0d9'}}>
+        <div className='accountDiv m-4 rounded-full bg-white px-4 py-3' style={{boxShadow:'1px 1px 5px #e0e0e0d9'}}>
           <div className='flex items-center'>
             <div>
               <img className='w-10 h-19 rounded-full' src={session?.user?.image?session?.user?.image:""} alt="" />
