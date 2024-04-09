@@ -5,6 +5,7 @@ import { MongoDBAdapter } from '@auth/mongodb-adapter'
 import clientPromise from '@/lib/mongodb'
 import connectDb from '@/utils/connectDb'
 import User from '@/models/User'
+import AccountBalance from '@/models/accountSchema'
 import bcrypt from 'bcryptjs'
 import CredentialsProvider from "next-auth/providers/credentials";
 import FacebookProvider from 'next-auth/providers/facebook'
@@ -54,6 +55,7 @@ export default NextAuth({
       clientSecret: process.env.GITHUB_SECRET as string
     }),
    ],
+
    secret:process.env.NEXTAUTH_SECRET,
    session:{
     strategy:"jwt",
@@ -64,6 +66,16 @@ export default NextAuth({
    callbacks:{
     async jwt({ token, user, account, profile }) {
       if(user){
+        const userId=user.id
+
+        const existingBalance = await AccountBalance.findOne({ userId:userId});
+
+            // If an AccountBalance doesn't exist, create one
+            if (!existingBalance) {
+                await AccountBalance.create({ userId: userId,balance:500 });
+            }
+
+
         token.provider=account?.provider
       }
       return token
@@ -73,6 +85,11 @@ export default NextAuth({
         session.user.provider=token.provider
       }
       return session
-    }
+    },
+
    }
 })
+
+export async function addBalance(){
+  console.log("THis is async function")
+}

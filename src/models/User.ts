@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-
+import AccountBalance from "./accountSchema";
 const userSchema= new mongoose.Schema({
     name:{
         type:String,
@@ -31,6 +31,21 @@ const userSchema= new mongoose.Schema({
         default:'User',
     },
 });
+
+// userSchema.post('save', async function () {
+//     console.log('this is runned')
+//     // Check if this is a new user
+//     if (this.isNew) {
+//       // Create a new AccountBalance instance with a balance of 500
+//       const accountBalance = new AccountBalance({
+//         userId: this._id, // Associate the new account balance with the user's ID
+//         balance: 500
+//       });
+  
+//       // Save the AccountBalance instance to the database
+//       await accountBalance.save();
+//     }
+//   });
 
 const User = mongoose.models.User || mongoose.model("User",userSchema);
 
