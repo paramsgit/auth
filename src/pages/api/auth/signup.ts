@@ -1,3 +1,4 @@
+import AccountBalance from "@/models/accountSchema";
 import User from "@/models/User";
 import connectDb from "@/utils/connectDb";
 import bcrypt from 'bcryptjs';
@@ -30,6 +31,12 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
         password:cryptedPassword
     });
     await newuser.save()
+    const userId=newuser._id;
+    await AccountBalance.create({
+        userId,
+        balance:500
+    })
+
     return res.json({
         message:"Register success!"
     })

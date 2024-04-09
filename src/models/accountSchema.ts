@@ -12,6 +12,6 @@ const accountSchema= new mongoose.Schema({
     }
 });
 
-const Account = mongoose.models.Account || mongoose.model("Account",accountSchema);
+const AccountBalance = mongoose.models.AccountBalance || mongoose.model("AccountBalance",accountSchema);
 
-export default Account;
+export default AccountBalance;

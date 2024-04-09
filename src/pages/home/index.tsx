@@ -23,7 +23,7 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
   
   return <>
   <div className='flex flex-col-reverse md:flex-row w-full '>
-    <div className="left w-full md:w-1/2 md:p-10 md:pl-24">
+    <div className="left w-full md:w-1/2 p-2 md:p-10 lg:pl-24">
         <div className={`heading px-4 md:px-10 overflow-hidden`}>
           <div className={`transition-all duration-700 ease-linear ${TrsForm ? "animateMoveUp" :"my-4 md:my-10"}`}>
             <h1 className={`${TrsForm?"opacity-0":""} transition-all duration-300 ease-in-out Noto text-3xl font-bold text-gray-900 dark:text-white mb-1`}>Paytm</h1>
@@ -36,7 +36,7 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
         <button type="button" className="mx-3 py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10  focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Receive Money</button>
 
         </div>
-        <div className={`transactionForm px-4 md:px-10 py-4 ${!TrsForm && 'hidden'}`}>
+        <div className={`transactionForm px-4 md:p-1 lg:px-10 py-4 ${!TrsForm && 'hidden'}`}>
             <TransactionForm/>
         </div>
     </div>

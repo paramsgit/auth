@@ -1,6 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import react, { useEffect, useState } from 'react';
-import ComboBoxFile from './comboBoxFile';
 
 const numberToText = require('number-to-text')
 require('number-to-text/converters/en-us');
@@ -26,12 +25,23 @@ return (await fetch("http://localhost:3000/api/getUsers")).json()
 const TransactionForm: React.FunctionComponent<ITransactionFormProps> = (props) => {
     const [ReceiverId,setReceiverId]=useState("")
     const [amount,setamount]=useState("")
+    const [inputFocused,setinputFocused]=useState(false)
+    const [inputFocused2,setinputFocused2]=useState(false)
     const [amountInWords,setamountInWords]=useState("")
     
     const queryClient=useQueryClient()
     const usersQuery=useQuery({queryKey:['allUsers'],queryFn:getAllUsers})
-    console.log(usersQuery)
+    const filteredData = usersQuery?.data?.allUsers.filter((item:userTemplate) =>
+      item.name.toLowerCase().includes(ReceiverId.toLowerCase()) ||
+      item.email.toLowerCase().includes(ReceiverId.toLowerCase())
+    );
     
+    const handleFocus=()=>{setinputFocused(true);setinputFocused2(true)}
+    const handleBlur=()=>{
+      
+      setTimeout(() => { setinputFocused(false) }, 400);
+      setTimeout(() => { setinputFocused2(false) }, 100);
+  }
     
     
     useEffect(() => {
@@ -52,11 +62,29 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = (props) 
   
 
 <form className="transactionForm max-w-sm my-4 md:my-8 p-8 rounded-xl bg-stone-100 dark:bg-zinc-900">
-  <div className="mb-5">
+  <div className="mb-5 max-w-full relative">
     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Id of Receiver</label>
-    {/* <input type="email" id="email" className="userIdInput bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" value={ReceiverId} onChange={(e)=>{setReceiverId(e.target.value)}} role="presentation" autoComplete='off' required /> */}
+    <input type="email" id="email" className="userIdInput bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" value={ReceiverId} onChange={(e)=>{setReceiverId(e.target.value)}} onFocus={handleFocus} onBlur={handleBlur} role="presentation" autoComplete='off' required />
   
-
+    <div className={`p-1 mt-1 rounded-xl absolute text-white ${!inputFocused && 'pointer-events-none'} ${!inputFocused2 && 'opacity-0'} bigSugg bg-white`} style={{boxShadow:'1px 1px 5px #e0e0e0d9'}}>
+<ul className='userSuggestionsDiv bg-white p-1  overflow-auto max-h-[270px] ' >
+  {filteredData?.map((u:userTemplate)=>{
+    return <li key={u._id} className='m-1 cursor-pointer' onClick={()=>setReceiverId(u.email)}>
+    <div className='accountDiv m-4 rounded-full bg-white px-1 py-1 lg:border border-gray-200'>
+          <div className='flex items-center'>
+            <div>
+              <img className='w-10 min-w-6 h-19 rounded-full' src={u.image} alt="" />
+              
+            </div>
+            <div className='flex flex-col mx-3'>
+              <h1 className='text-gray-800 text-sm font-[Ubuntu]'>{u.name}</h1>
+              <h2 className='text-gray-500 text-xs'>{u.email}</h2>
+            </div>
+          </div>
+        </div>
+  </li>})}
+</ul>
+</div>
 
   </div>
   <div className="mb-5">
