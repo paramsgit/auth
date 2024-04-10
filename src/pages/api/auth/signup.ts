@@ -5,6 +5,9 @@ import bcrypt from 'bcryptjs';
 import type { NextApiRequest,NextApiResponse } from "next";
 // import validator from 'validator'
 export default async function handler(req:NextApiRequest,res:NextApiResponse){
+    if (req.method !== 'POST') {
+        return res.status(400).json({message:"An error Occured"})
+    }
     try {
         await connectDb();
     const {first_name,last_name,email,phone_number,password}=req.body;

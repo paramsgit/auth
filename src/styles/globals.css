@@ -31,6 +31,11 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+.disabled{
+  opacity: 0.7;
+  pointer-events: none;
+}
+
 /* body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
