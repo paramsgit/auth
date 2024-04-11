@@ -4,6 +4,9 @@ import AccountBalance from '@/models/accountSchema'
 import mongoose from 'mongoose'
 import User from '@/models/User'
 export default async function transfer(req: NextApiRequest, res: NextApiResponse) {
+    if(req.method!=="post"){
+        return res.status(400).json({message:"Invalid request"})
+    }
     const userToken=req.cookies['next-auth.session-token']
     if(!userToken){
         return res.status(401).json({error: "Please login"})
@@ -14,23 +17,31 @@ export default async function transfer(req: NextApiRequest, res: NextApiResponse
     const userId=userData.user._id
 
     try {
-        // const {amount,to}=req.body;
-        // if(!amount || !to){
-        //     return res.status(400).json({message:"Insufficient Data"})
-        // }
+        const {amount,to}=req.body;
+        if(!amount || !to){
+            return res.status(400).json({message:"Insufficient Data"})
+        }
         
-        const to="param11650@gmail.com"
-       const session=await mongoose.startSession();
+        const session=await mongoose.startSession();
         session.startTransaction();
-        console.log(userId)
         const account =await AccountBalance.findOne({userId:userId}).session(session);
-        console.log("here")
-        const toUser =await User.findOne({userId:userId}).session(session);
-        console.log("there")
-        const toAccount =await AccountBalance.findOne({userId:toUser}).session(session);
-        console.log(toAccount)
 
-        
+        if(!account || account.balance <amount){
+            await session.abortTransaction();
+            return res.status(400).json({message:"Insufficient Balance"})
+        }
+
+        const toUser =await User.findOne({email:to}).session(session);
+        const toAccount =await AccountBalance.findOne({userId:toUser}).session(session);
+        if(!toAccount){
+            await session.abortTransaction();
+            return res.status(400).json({message:"Recipient not found"})
+        }
+
+        await AccountBalance.updateOne({ userId: userId }, { $inc: { balance: -amount } }).session(session);
+        await AccountBalance.updateOne({ userId: toUser }, { $inc: { balance: amount } }).session(session);
+
+        await session.commitTransaction();        
        return res.status(200).json({mesage:"sucess"})
     } catch (error) {
         console.log(error)

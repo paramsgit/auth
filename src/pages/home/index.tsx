@@ -1,10 +1,15 @@
 import React,{useEffect, useState} from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSession } from 'next-auth/react';
 import { useUIStore } from '@/lib/store';
 import TransactionForm from './transactionForm';
 import Graph from './graph';
 interface IFrontProps {
 }
+
+const getBalance=async()=>{
+  return (await fetch("/api/account")).json()
+  }
 
 const Front: React.FunctionComponent<IFrontProps> = (props) => {
   const { data: session } = useSession();
@@ -13,13 +18,10 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
     TrsForm: state.TrsForm,
     showTrsForm: state.showTrsForm,
   }));
-  useEffect(() => {
-    if(session){
-      console.log("sess",session)
-    }
+
   
-   
-  }, [])
+  const queryClient=useQueryClient()
+  const balanceQuery=useQuery({queryKey:['currentBalance'],queryFn:getBalance})
   
   return <>
   <div className='flex flex-col-reverse md:flex-row w-full '>
@@ -57,7 +59,7 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
         <div className="availablebalance px-4">
           <div>
           <p className='text-xs text-gray-700 Noto'>Balance:</p>
-          <h1 className='text-3xl Noto py-1 font-bold text-gray-800'>₹500</h1>
+          <h1 className='text-3xl Noto py-1 font-bold text-gray-800'>₹{balanceQuery && balanceQuery?.data?.balance}</h1>
           </div>
         </div>
         <div className='graph'>
