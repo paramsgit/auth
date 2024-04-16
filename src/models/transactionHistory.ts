@@ -1,18 +1,18 @@
 import mongoose from "mongoose"
 import AccountBalance from "./accountSchema";
 const userSchema= new mongoose.Schema({
-    name:{
+    type:{
         type:String,
         required:true,
     },
-    email:{
-        type:String,
-        required:true,
-        unique:true,
+    counterparty:{
+        type: mongoose.Schema.Types.ObjectId, // Reference to User model
+        ref: 'User',
+        required: true
     },
-    image:{
-        type:String,
-        default:"https://upload.wikimedia.org/wikipedia/commons/2/2c/Default_pfp.svg"
+    amount:{
+        type:Number,
+        required:true
     },
     password:{
         type:String,
