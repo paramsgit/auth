@@ -4,7 +4,7 @@ import AccountBalance from '@/models/accountSchema'
 import mongoose from 'mongoose'
 import User from '@/models/User'
 export default async function transfer(req: NextApiRequest, res: NextApiResponse) {
-    if(req.method!=="post"){
+    if(req.method!==("POST" || "post")){
         return res.status(400).json({message:"Invalid request"})
     }
     const userToken=req.cookies['next-auth.session-token']
@@ -42,7 +42,7 @@ export default async function transfer(req: NextApiRequest, res: NextApiResponse
         await AccountBalance.updateOne({ userId: toUser }, { $inc: { balance: amount } }).session(session);
 
         await session.commitTransaction();        
-       return res.status(200).json({mesage:"sucess"})
+       return res.status(200).json({message:"success"})
     } catch (error) {
         console.log(error)
         return res.status(500).json({message:(error as Error).message})

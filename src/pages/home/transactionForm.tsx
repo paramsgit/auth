@@ -1,9 +1,10 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import react, { useEffect, useState } from 'react';
 
 const numberToText = require('number-to-text')
 require('number-to-text/converters/en-us');
 interface ITransactionFormProps {
+  fnss:()=>Promise<void>
 }
 interface userTemplate{
   
@@ -22,7 +23,8 @@ const getAllUsers=async()=>{
 return (await fetch("http://localhost:3000/api/getUsers")).json()
 }
 
-const TransactionForm: React.FunctionComponent<ITransactionFormProps> = (props) => {
+const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss}) => {
+
     const [ReceiverId,setReceiverId]=useState("")
     const [amount,setamount]=useState("")
     const [inputFocused,setinputFocused]=useState(false)
@@ -54,21 +56,50 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = (props) 
     
     }, [amount])
 
-
-    const handleSubmit=async(e)=>{
-      e.preventDefault();
-      const response=await fetch('/api/transfer',{
-      method:'POST',
-      headers:{
-      Accept:'application.json',
-      'Content-Type':'application/json'
-    },
-    body:JSON.stringify({to:ReceiverId,amount:amount})
-  })
-  const result=await response.json()
-  console.log(result)
-
+    const transferMoney=async()=>{
+      try {
+        const response=await fetch('/api/transfer',{
+          method:'POST',
+          headers:{
+          Accept:'application.json',
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({to:ReceiverId,amount:amount})
+      })
+      const result=await response.json()
+      if(response.ok){
+        if(result.message=="success"){
+         await fnss()
+        }
+      }
+      return result;
+      } catch (error) {
+        return error
+      }
+     
     }
+    const handleSubmit=async(e:react.FormEvent<HTMLFormElement>)=>{
+      e.preventDefault()
+      const transfer=await transferMoney();
+      console.log(transfer)
+      
+    }
+    
+    // const handleSubmit=async(e:react.FormEvent<HTMLFormElement>)=>{
+    //   e.preventDefault();
+    //  const {mutate,isPending}=useMutation({mutationFn:transferMoney,
+    // onSuccess:(data)=>{console.log(data)
+    // queryClient.invalidateQueries({queryKey:['currentBalance']})
+    // },
+    // onError:(data)=>{console.log(data,"!")},
+    
+    // })
+    
+ 
+
+    // }
+
+   
 
     const checkAndSetAmount=(am:string)=>{
         const trueString=/^\d+$/.test(am)

@@ -8,7 +8,7 @@ const History: React.FunctionComponent<IHistoryProps> = (props) => {
   
   return <>
   <Layout>
-    history
+  
 
   
 
