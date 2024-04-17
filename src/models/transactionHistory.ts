@@ -1,11 +1,12 @@
 import mongoose from "mongoose"
-import AccountBalance from "./accountSchema";
-const userSchema= new mongoose.Schema({
-    type:{
-        type:String,
-        required:true,
+
+const THistory= new mongoose.Schema({
+    sender:{
+        type: mongoose.Schema.Types.ObjectId, // Reference to User model
+        ref: 'User',
+        required: true
     },
-    counterparty:{
+    receiver:{
         type: mongoose.Schema.Types.ObjectId, // Reference to User model
         ref: 'User',
         required: true
@@ -14,25 +15,20 @@ const userSchema= new mongoose.Schema({
         type:Number,
         required:true
     },
-    password:{
-        type:String,
-        required:true,
-    },
-    emailVerified:{
+    completed:{
         type:Boolean,
         default:false,
-    },
-    phone:{
-        type:String,
         required:true,
     },
-    role:{
+    description:{
         type:String,
-        default:'User',
-    },
-});
+        default:"Initiated"
+    }
+    
+   
+}, {timestamps:true},);
 
 
-const User = mongoose.models.User || mongoose.model("User",userSchema);
+const TransactionHistory = mongoose.models.TransactionHistory || mongoose.model("TransactionHistory",THistory);
 
-export default User;
+export default TransactionHistory;
