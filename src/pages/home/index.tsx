@@ -12,10 +12,8 @@ interface IFrontProps {
 const Front: React.FunctionComponent<IFrontProps> = (props) => {
   const { data: session } = useSession();
   const [sessionData,setsessionData]=useState(session)
-  const getBalance=async()=>{
-    return (await fetch("/api/account")).json()
-    }
-  const { TrsForm, showTrsForm } = useUIStore(state => ({
+  const getBalance=async()=>{ return (await fetch("/api/account")).json() }
+    const { TrsForm, showTrsForm } = useUIStore(state => ({
     TrsForm: state.TrsForm,
     showTrsForm: state.showTrsForm,
   }));
@@ -23,10 +21,7 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
   
   const queryClient=useQueryClient()
   const balanceQuery=useQuery({queryKey:['currentBalance'],queryFn:getBalance})
-  const update=async ()=>{
-    console.log("update fn was called")
-    await queryClient.invalidateQueries({queryKey: ['currentBalance']});
-  }
+  const updateBalance=async ()=>{ await queryClient.invalidateQueries({queryKey: ['currentBalance']}); }
   return <>
   <div className='flex flex-col-reverse md:flex-row w-full '>
     <div className="left w-full md:w-1/2 p-2 md:p-10 lg:pl-24">
@@ -43,7 +38,7 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
 
         </div>
         <div className={`transactionForm px-4 md:p-1 lg:px-10 py-4 ${!TrsForm && 'hidden'}`}>
-            <TransactionForm fnss={update}/>
+            <TransactionForm fnss={updateBalance}/>
         </div>
     </div>
     <div className="right w-full md:w-1/2 flex justify-center items-center transition-all duration-500 ease-linear pt-10">
