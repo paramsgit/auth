@@ -17,9 +17,10 @@ export default async function balance(req: NextApiRequest, res: NextApiResponse)
                 { "sender": userId },
                 { "receiver": userId, "completed": true }
             ]
-        }).sort({ "createdAt": 1 });
-        console.log(transactions)
-        return res.status(200).json({transactions:transactions})
+        }).sort({ "createdAt": 1 }).populate('sender receiver');
+
+        const reversedTransactions=transactions.reverse();
+        return res.status(200).json({transactions:reversedTransactions,userId:userId})
     } catch (error) {
         return res.status(500).json({message:(error as Error).message})
     }

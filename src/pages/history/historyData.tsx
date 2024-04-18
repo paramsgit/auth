@@ -8,7 +8,20 @@ const HistoryData: React.FunctionComponent<IHistoryDataProps> = (props) => {
     const queryClient=useQueryClient()
     const getAllTransactions=async()=>{ return (await fetch('/api/transactions')).json() }
     const transactionQuery=useQuery({queryKey:['getAllTransactions'],queryFn:getAllTransactions})
-  
+    
+    const formatDate=(date:string)=>{
+      const currentDate = new Date(date);
+      const formattedDate = currentDate.toLocaleDateString('en-GB', {
+          day: '2-digit',
+          month: '2-digit',
+          year: '2-digit'
+      });
+          return formattedDate;  }
+    const trimmer=(str:string, maxLength:number)=> {
+        if (str.length <= maxLength) { return str }
+        else { return str.substring(0, maxLength - 3) + '...'; }
+      }
+
   return <>
   <div className="tablediv w-full flex justify-center">
           <div className="py-4 px-2 rounded-lg max-w-2xl relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -31,7 +44,7 @@ const HistoryData: React.FunctionComponent<IHistoryDataProps> = (props) => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/50">
+                {/* <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/50">
                  
                   <th
                     scope="row"
@@ -55,9 +68,9 @@ const HistoryData: React.FunctionComponent<IHistoryDataProps> = (props) => {
                   <span className="font-normal text-xs text-gray-600">12/04/03</span></div>
                   </td>
                   
-                </tr>
+                </tr> */}
                 {transactionQuery && transactionQuery?.data?.transactions.map((trsn:any)=>{
-                  return <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/50">
+                  return <tr key={trsn?._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/50">
                  
                   <th
                     scope="row"
@@ -65,20 +78,26 @@ const HistoryData: React.FunctionComponent<IHistoryDataProps> = (props) => {
                   >
                     <img
                       className="w-9 h-9 rounded-full"
-                      src="https://lh3.googleusercontent.com/a/ACg8ocJsM6TU7-XEn_fHcEvBo3GkE4Z33szEPM7tE48P5Tj17hv6r0w=s96-c"
-                      alt="User_Image"
+                      src=
+                      {trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.image:trsn?.sender?.image}
+                      alt="User"
                     />
                     <div className="ps-3">
-                      <div className="text-sm font-semibold">Paramveer Singh</div>
+                      <div className="text-sm font-semibold">
+        
+                      {trimmer(trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.name:trsn?.sender?.name,16)}
+                        </div>
                       <div className="font-normal text-gray-500">
-                        neil.sims@flowbite.com
+                      {trimmer(trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.email:trsn?.sender?.email,18)}
                       </div>
                     </div>
                   </th>
                   <td className="px-2 py-4 "> 
-<div className="flex flex-col text-green-600 font-bold ">
-                  +{trsn.amount}
-                  <span className="font-normal text-xs text-gray-600">12/04/03</span></div>
+                    <div className={`flex flex-col font-bold ${trsn?.sender?._id==transactionQuery?.data?.userId?"text-red-600":"text-green-600"}`}>            
+                      {trsn?.sender?._id==transactionQuery?.data?.userId?"-":"+"} 
+                      {trsn.amount}
+                      
+                  <span className="font-normal text-xs text-gray-600">{formatDate(trsn?.createdAt)}</span></div>
                   </td>
                   
                 </tr>
@@ -104,7 +123,7 @@ const HistoryData: React.FunctionComponent<IHistoryDataProps> = (props) => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/50">
+                {/* <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/50">
                  
                   <th
                     scope="row"
@@ -127,8 +146,39 @@ const HistoryData: React.FunctionComponent<IHistoryDataProps> = (props) => {
                   <span>Date</span>
                   </td>
                   
+                </tr> */}
+                {transactionQuery && transactionQuery?.data?.transactions.map((trsn:any)=>{
+                  return <tr key={`2${trsn?._id}`} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/50">
+                 
+                  <th
+                    scope="row"
+                    className="flex items-center px-10 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    <img
+                      className="w-10 h-10 rounded-full"
+                      src=
+                      {trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.image:trsn?.sender?.image}
+                      alt="User"
+                    />
+                    <div className="ps-3">
+                      <div className="text-base font-semibold">
+        
+                        {trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.name:trsn?.sender?.name}
+                        </div>
+                      <div className="font-normal text-gray-500">
+                      {trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.email:trsn?.sender?.email}
+                      </div>
+                    </div>
+                  </th>
+                  
+                  <td className={`xl:px-16 px-12 py-4 text-green-600  font-bold ${trsn?.sender?._id==transactionQuery?.data?.userId?"text-red-600":"text-green-600"}`}> {trsn?.sender?._id==transactionQuery?.data?.userId?"-":"+"} 
+                      {trsn.amount}</td>
+                  <td className="xl:px-16 px-12 py-4">
+                  <span>{formatDate(trsn?.createdAt)}</span>
+                  </td>
+                  
                 </tr>
-               
+                })}
               </tbody>
             </table>
 
