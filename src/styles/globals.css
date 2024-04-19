@@ -75,3 +75,31 @@ input[type=number] {
  -webkit-border-radius: 5rem;
 
 } 
+.text-2xs {
+  font-size: 0.75rem/* 12px */;
+  line-height: 0.74rem/* 16px */;
+}
+
+@keyframes shine {
+  to {
+    background-position-x: -200%;
+  }
+}
+@layer components {
+  .h_skelton2 {
+    /* Your custom styles here */
+    background: linear-gradient(110deg, #1b2231 8%, rgba(23, 31, 49, 0.929)8%, #1b2231f9 33%);
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+  }
+}
+.h_skelton{
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+  
+}
+ 
+.h_skelton3{
+  @apply h_skelton dark:h_skelton2; 
+}
