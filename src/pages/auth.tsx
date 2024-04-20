@@ -23,7 +23,7 @@ const auth = ({
       )}
       <div className="w-full flex justify-center py-4">
         <div className="max-w-md w-[80%] md:w-full h-[2px] bg-slate-600/20 rounded-lg flex justify-center">
-          <span className="-mt-[12px] px-2 bg-white text-slate-400">Or</span>
+          <span className="-mt-[12px] px-2 bg-white dark:bg-[#212121] text-slate-400">Or</span>
         </div>
       </div>
       <div className="flex flex-col md:flex-row items-center justify-center pb-10">

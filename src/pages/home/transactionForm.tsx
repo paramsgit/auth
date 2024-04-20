@@ -114,18 +114,18 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss})
     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Id of Receiver</label>
     <input type="email" id="email" className="userIdInput bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" value={ReceiverId} onChange={(e)=>{setReceiverId(e.target.value)}} onFocus={handleFocus} onBlur={handleBlur} role="presentation" autoComplete='off' required />
   
-    <div className={`p-1 mt-1 rounded-xl absolute text-white ${!inputFocused && 'pointer-events-none'} ${!inputFocused2 && 'opacity-0'} bigSugg bg-white`} style={{boxShadow:'1px 1px 5px #e0e0e0d9'}}>
-<ul className='userSuggestionsDiv bg-white p-1  overflow-auto max-h-[270px] ' >
+    <div className={`z-10 w-full p-1 mt-1 rounded-xl absolute text-white ${!inputFocused && 'pointer-events-none'} ${!inputFocused2 && 'opacity-0'} bigSugg bg-white dark:bg-[#212121] shadow dark:shadow-md`} >
+<ul className='userSuggestionsDiv bg-white dark:bg-[#212121] p-1  overflow-auto max-h-[210px] ' >
   {filteredData?.map((u:userTemplate)=>{
     return <li key={u._id} className='m-1 cursor-pointer' onClick={()=>setReceiverId(u.email)}>
-    <div className='accountDiv m-4 rounded-full bg-white px-1 py-1 lg:border border-gray-200'>
+    <div className='accountDiv m-4 rounded-full bg-white dark:bg-zinc-900 px-1 py-1 lg:border border-gray-200 dark:border-transparent'>
           <div className='flex items-center'>
             <div>
               <img className='w-10 min-w-6 h-19 rounded-full' src={u.image} alt="" />
               
             </div>
             <div className='flex flex-col mx-3'>
-              <h1 className='text-gray-800 text-sm font-[Ubuntu]'>{u.name}</h1>
+              <h1 className='text-gray-800 dark:text-gray-300 text-sm font-[Ubuntu]'>{u.name}</h1>
               <h2 className='text-gray-500 text-xs'>{u.email}</h2>
             </div>
           </div>

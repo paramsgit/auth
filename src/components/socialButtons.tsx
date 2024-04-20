@@ -12,7 +12,7 @@ const SocialButton: React.FunctionComponent<ISocialButtonProps> = (props) => {
   return <>
    <form className='my-2 md:my-4 mx-8' method='post' action={`/api/auth/signin/${id}`}>
     <input type="hidden" name="csrfToken" defaultValue={csrfToken}/>
-    <button className='w-full max-w-xs font-bold shadow-sm rounded-lg bg-indigo-100 text-gray-800 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline px-8 py-[0.65rem]' onClick={()=>signIn(id)}>
+    <button className='w-full max-w-xs font-bold shadow-sm rounded-lg bg-indigo-100 text-gray-800 dark:text-gray-400 dark:bg-gray-900 flex items-center justify-center transition-all duration-300 ease-in-out focus:outline-none hover:shadow focus:shadow-sm focus:shadow-outline px-8 py-[0.65rem]' onClick={()=>signIn(id)}>
     <div className="bg-white p-2 rounded-full">
                                  {id=='google'?
                                 <svg className="w-4" viewBox="0 0 533.5 544.3">

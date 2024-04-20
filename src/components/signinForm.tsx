@@ -61,7 +61,7 @@ const SigninForm = (props: Props) => {
       };
 
   return (
-    <div className="isolate bg-white px-6 pb-6 pt-24 lg:px-8">
+    <div className="isolate bg-white dark:bg-transparent px-6 pb-6 pt-24 lg:px-8">
       <div
         className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
         aria-hidden="true"
@@ -75,10 +75,10 @@ const SigninForm = (props: Props) => {
         ></div>
       </div>
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-200 sm:text-4xl">
         Sign in to your account
         </h2>
-        <p className="text-base p-2">
+        <p className="text-base p-2 dark:text-gray-600">
           Or
         <button onClick={()=>{
           router.push({
@@ -87,7 +87,7 @@ const SigninForm = (props: Props) => {
               tab:"signup"
             }
           })
-        }} className="text-blue-600 mx-2" >Create an account</button>
+        }} className="text-blue-600 dark:text-blue-500 mx-2" >Create an account</button>
         </p>
       </div>
 
@@ -103,7 +103,7 @@ const SigninForm = (props: Props) => {
           <div className="sm:col-span-2">
             <label
               htmlFor="email"
-              className="block text-sm font-semibold leading-6 text-gray-900"
+              className="block text-sm font-semibold leading-6 text-gray-900 dark:text-gray-400"
             >
               Email
             </label>
@@ -112,11 +112,15 @@ const SigninForm = (props: Props) => {
                 type="email"
                 {...register("email")}
                 id="email"
-                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset ${
+                placeholder="john@gmail.com"
+                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900  shadow-sm ring-1 ring-inset ring-gray-300  placeholder:text-gray-400  focus:ring-2  focus:ring-inset dark:bg-gray-900 dark:outline-none dark:text-gray-50 dark:placeholder:text-gray-700 dark:ring-gray-900
+                
+                ${
                   errors.email
                     ? "focus:ring-red-600 border-red-900 outline-none"
                     : "focus:ring-indigo-600"
                 } sm:text-sm sm:leading-6`}
+                autoComplete="off"
               />
               {errors.email && (
                 <span className="text-sm text-red-700">
@@ -129,7 +133,7 @@ const SigninForm = (props: Props) => {
           <div className="sm:col-span-2">
             <label
               htmlFor="password"
-              className="block text-sm font-semibold leading-6 text-gray-900"
+              className="block text-sm font-semibold leading-6 text-gray-900 dark:text-gray-400"
             >
               Password
             </label>
@@ -138,7 +142,8 @@ const SigninForm = (props: Props) => {
                 type="password"
                 {...register("password")}
                 id="password"
-                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset ${
+                placeholder="********"
+                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset dark:bg-gray-900 dark:outline-none dark:text-gray-50 dark:placeholder:text-gray-700 dark:ring-gray-900 ${
                   errors.password
                     ? "focus:ring-red-600 border-red-900 outline-none"
                     : "focus:ring-indigo-600"

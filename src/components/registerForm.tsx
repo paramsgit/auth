@@ -70,7 +70,7 @@ try {
 
   };
   return (
-    <div className="isolate bg-white px-6 pt-16 pb-6 lg:px-8">
+    <div className="isolate bg-white dark:bg-transparent px-6 pt-16 pb-6 lg:px-8">
       <div
         className="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[-20rem]"
         aria-hidden="true"
@@ -84,12 +84,12 @@ try {
         ></div>
       </div>
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-gray-200">
           Create a new account
         </h2>
-        <p className="text-base p-2">
+        <p className="text-base p-2 dark:text-gray-500">
           Already have an account?
-        <Link className="text-blue-600 mx-2" onClick={()=>{console.log("going to")}} href='/auth'>Sign In </Link>
+        <Link className="text-blue-600 dark:text-blue-500 mx-2" onClick={()=>{console.log("going to")}} href='/auth'>Sign In </Link>
         </p>
         
       </div>
@@ -101,7 +101,7 @@ try {
           <div>
             <label
               htmlFor="first_name"
-              className="block text-sm font-semibold leading-6 text-gray-900"
+              className="block text-sm font-semibold leading-6 text-gray-900 dark:text-gray-400"
             >
               First name
             </label>
@@ -110,7 +110,7 @@ try {
                 type="text"
                 id="first_name"
                 {...register("first_name")}
-                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset ${
+                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset dark:bg-gray-900 dark:outline-none dark:text-gray-50 dark:placeholder:text-gray-700 dark:ring-gray-900 ${
                   errors.first_name
                     ? "focus:ring-red-600 border-red-900 outline-none"
                     : "focus:ring-indigo-600"
@@ -126,7 +126,7 @@ try {
           <div>
             <label
               htmlFor="last-name"
-              className="block text-sm font-semibold leading-6 text-gray-900"
+              className="block text-sm font-semibold leading-6 text-gray-900 dark:text-gray-400"
             >
               Last name
             </label>
@@ -136,7 +136,8 @@ try {
                 id="last-name"
                 autoComplete="family-name"
                 {...register("last_name")}
-                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset ${
+                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset
+                dark:bg-gray-900 dark:outline-none dark:text-gray-50 dark:placeholder:text-gray-700 dark:ring-gray-900 ${
                   errors.last_name
                     ? "focus:ring-red-600 border-red-900 outline-none"
                     : "focus:ring-indigo-600"
@@ -153,7 +154,7 @@ try {
           <div className="sm:col-span-2">
             <label
               htmlFor="email"
-              className="block text-sm font-semibold leading-6 text-gray-900"
+              className="block text-sm font-semibold leading-6 text-gray-900 dark:text-gray-400"
             >
               Email
             </label>
@@ -162,7 +163,8 @@ try {
                 type="email"
                 {...register("email")}
                 id="email"
-                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset ${
+                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset
+                dark:bg-gray-900 dark:outline-none dark:text-gray-50 dark:placeholder:text-gray-700 dark:ring-gray-900 ${
                   errors.email
                     ? "focus:ring-red-600 border-red-900 outline-none"
                     : "focus:ring-indigo-600"
@@ -178,13 +180,13 @@ try {
           <div className="sm:col-span-2">
             <label
               htmlFor="phone-number"
-              className="block text-sm font-semibold leading-6 text-gray-900"
+              className="block text-sm font-semibold leading-6 text-gray-900 dark:text-gray-400"
             >
               Phone number
             </label>
             <div className="relative mt-2.5">
               <div className="absolute inset-y-0 left-0 flex items-center">
-                <label htmlFor="country" className="sr-only">
+                <label htmlFor="country" className="dark:text-gray-400 sr-only">
                   Country
                 </label>
                 <select
@@ -199,7 +201,7 @@ try {
                 type="tel"
                 {...register("phone_number")}
                 id="phone-number"
-                className={`block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset ${
+                className={`block w-full rounded-md border-0 px-3.5 py-2 pl-20 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset dark:bg-gray-900 dark:outline-none dark:text-gray-50 dark:placeholder:text-gray-700 dark:ring-gray-900 ${
                   errors.phone_number
                     ? "focus:ring-red-600 border-red-900 outline-none"
                     : "focus:ring-indigo-600"
@@ -215,7 +217,7 @@ try {
           <div className="sm:col-span-2">
             <label
               htmlFor="password"
-              className="block text-sm font-semibold leading-6 text-gray-900"
+              className="block text-sm font-semibold leading-6 text-gray-900 dark:text-gray-400"
             >
               Password
             </label>
@@ -224,7 +226,7 @@ try {
                 type="password"
                 {...register("password")}
                 id="password"
-                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset ${
+                className={`block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset dark:bg-gray-900 dark:outline-none dark:text-gray-50 dark:placeholder:text-gray-700 dark:ring-gray-900 ${
                   errors.password
                     ? "focus:ring-red-600 border-red-900 outline-none"
                     : "focus:ring-indigo-600"
