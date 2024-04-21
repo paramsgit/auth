@@ -32,14 +32,14 @@ export default NextAuth({
         await connectDb();
         const user = await User.findOne({ email: credentials!.email });
         if (!user) {
-          throw new Error("Email is not registered.");
+          throw new Error("Incorrect email or password. Please try again.");
         }
         const isPasswordCorrect = await bcrypt.compare(
           credentials!.password,
           user.password
         );
         if (!isPasswordCorrect) {
-          throw new Error("Password is incorrect.");
+          throw new Error(" Incorrect email or password. Please try again.");
         }
         return user;
       },

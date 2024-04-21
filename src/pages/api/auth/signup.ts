@@ -20,7 +20,7 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
         email:email,
     });
     if(user){
-        return res.status(400).json({message:"Email already exists"})
+        return res.status(400).json({message:"Email already exists!"})
     }
     if(password.length<8){
         return res.status(400).json({message:"Password length should be more than 8"}) 
@@ -41,7 +41,7 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
     })
 
     return res.json({
-        message:"Register success!"
+        message:"Registration Success!, You can Login now"
     })
     } catch (error) {
         return res.status(500).json({message:(error as Error).message})

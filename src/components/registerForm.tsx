@@ -39,6 +39,9 @@ type FormSchemaType = z.infer<typeof FormSchema>;
 
 const RegisterForm = (props: Props) => {
   const [submitted, setsubmitted] = useState(false);
+  const [showAlert, setshowAlert] = useState(false);
+  const [alertText, setalertText] = useState("");
+  const [alertState, setalertState] = useState(false);
 
   const {
     register,
@@ -50,6 +53,9 @@ const RegisterForm = (props: Props) => {
   });
   const onSubmit = async (data: any) => {
     setsubmitted(true)
+    setshowAlert(false)
+    setalertState(false)
+    setalertText("")
 try {
   const apiResponse = await fetch('/api/auth/signup',{
     method:'POST',
@@ -60,10 +66,15 @@ try {
     body:JSON.stringify(data)
   })
 
+  if(apiResponse.ok){setalertState(true)}
+
   const response=await apiResponse.json()
-  console.log(response)
+  setalertText(response?.message)
+  setshowAlert(true)
 } catch (error) {
   console.log(error)
+  setalertText("Something went wrong")
+  setshowAlert(true)
 }
     
     setsubmitted(false)
@@ -240,7 +251,11 @@ try {
             </div>
           </div>
         </div>
-        <div className="mt-10">
+        <div className="mt-6">
+          {/* Alert Box */}
+        <div className={`${showAlert && `${ alertState ? 'text-green-800 dark:text-green-400 bg-green-50':' text-red-800 dark:text-red-400 bg-red-50'} p-4 `} text-transparent ${!showAlert &&"h-0"} transition-all ease-in-out duration-300 p-0 mb-4 text-sm  rounded-lg  dark:bg-gray-800 `} role="alert">
+         {alertText}
+      </div>
           <button
             type="submit"
             className={`block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${submitted && 'opacity-50 pointer-events-none'}`}
