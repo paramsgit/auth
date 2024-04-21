@@ -68,12 +68,12 @@ export default NextAuth({
       if(user){
         const userId=user.id
 
-        const existingBalance = await AccountBalance.findOne({ userId:userId});
+        // const existingBalance = await AccountBalance.findOne({ userId:userId});
 
-            // If an AccountBalance doesn't exist, create one
-            if (!existingBalance) {
-                await AccountBalance.create({ userId: userId,balance:500 });
-            }
+        //     // If an AccountBalance doesn't exist, create one
+        //     if (!existingBalance) {
+        //         await AccountBalance.create({ userId: userId,balance:500 });
+        //     }
 
 
         token.provider=account?.provider
@@ -90,6 +90,3 @@ export default NextAuth({
    }
 })
 
-export async function addBalance(){
-  console.log("THis is async function")
-}

@@ -2,6 +2,7 @@ import React from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { signOut } from 'next-auth/react'
+import Switcher from './modeSwitch/switch'
 
 type Props = {}
 
@@ -12,12 +13,22 @@ export const Navbar = (props: Props) => {
 
 <nav className="bg-white dark:bg-[#121212] fixed w-full z-50 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
   <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
-  <a href="/" className="flex items-center  md:px-2 md:py-1 rounded-lg rtl:space-x-reverse">
+  <a href="" className="flex items-center  md:px-2 md:py-1 rounded-lg rtl:space-x-reverse">
       <img src={'/walletLogo.png'} className="h-8 " alt="Flowbite Logo" />
-      
+     
   </a>
   <div className="flex order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-      <button onClick={()=>signOut()} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl md:rounded-lg text-xs md:text-sm px-3 py-2 md:px-4 md:py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Sign Out</button>
+    <div>
+  <Switcher/>
+  </div>
+      <button onClick={()=>signOut()} type="button" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-2xl md:rounded-lg text-xs md:text-sm px-3 py-2 md:px-4 md:py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        
+       <span className='hidden sm:block'> Sign Out</span>
+       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-box-arrow-right " viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
+  <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
+</svg>
+      </button>
 
   </div>
 

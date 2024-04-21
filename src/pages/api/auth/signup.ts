@@ -35,10 +35,10 @@ export default async function handler(req:NextApiRequest,res:NextApiResponse){
     });
     await newuser.save()
     const userId=newuser._id;
-    await AccountBalance.create({
-        userId,
-        balance:500
-    })
+    // await AccountBalance.create({
+    //     userId,
+    //     balance:500
+    // })
 
     return res.json({
         message:"Registration Success!, You can Login now"

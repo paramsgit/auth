@@ -13,9 +13,12 @@ export default async function balance(req: NextApiRequest, res: NextApiResponse)
 
     try {
         const accountData=await AccountBalance.findOne({userId:userData.user._id})
-       return res.status(200).json({balance:accountData.balance})
+        if(!accountData){
+            return res.status(200).json({response:false})
+        }
+       return res.status(200).json({response:true,balance:accountData.balance})
     } catch (error) {
-        return res.status(500).json({message:(error as Error).message})
+        return res.status(500).json({response:false,message:(error as Error).message})
     }
 
 return res.json({"message":"Hello world"})
