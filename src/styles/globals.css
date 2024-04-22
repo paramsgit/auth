@@ -111,3 +111,7 @@ input:-webkit-autofill:active {
 .h_skelton3{
   @apply h_skelton dark:h_skelton2; 
 }
+
+.trc{
+  transition: all 0.3s ease-in-out;
+}

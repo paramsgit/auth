@@ -16,6 +16,8 @@
     "@tanstack/react-query-devtools": "^5.29.0",
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.4.2",
+    "clsx": "^2.1.0",
+    "input-otp": "^1.2.4",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
     "mongoose": "^8.1.1",
@@ -27,6 +29,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
     "react-hook-form": "^7.50.0",
+    "tailwind-merge": "^2.3.0",
     "validator": "^13.11.0",
     "zod": "^3.22.4",
     "zustand": "^4.5.2"
