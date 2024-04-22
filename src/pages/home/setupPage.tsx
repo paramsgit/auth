@@ -1,10 +1,14 @@
-import * as React from 'react';
+import  React,{useState} from 'react';
 import { OTPInput, SlotProps } from 'input-otp'
 import { cn } from '@/utils/cn';
 interface ISetUpPageProps {
 }
 
 const SetUpPage: React.FunctionComponent<ISetUpPageProps> = (props) => {
+  const [walletPin,setwalletPin]=useState("")
+  const [confirmPin,setconfirmPin]=useState("")
+  const [pinError,setpinError]=useState("")
+  const [showconfirmPin,setshowconfirmPin]=useState(false)
 
     function Slot(props: SlotProps) {
         return (
@@ -44,20 +48,44 @@ const SetUpPage: React.FunctionComponent<ISetUpPageProps> = (props) => {
         )
       }
 
+      const checkPINS=()=>{
+        if(walletPin.length!=6 || (walletPin!=confirmPin)){
+          setpinError("Check your PIN again!")
+          return false;
+        }else{
+          console.log("Good to go")
+          setpinError("Good to go")
+          return true;
+        }
+      }
+
+      const reset=()=>{
+        setwalletPin("");
+        setconfirmPin("");
+        setpinError("")
+        setshowconfirmPin(false);
+      }
+      const handleSubmit=()=>{
+        const isSame=checkPINS()
+        console.log(isSame)
+      }
+
   return <>
         <div className="w-full max-w-3xl mt-8 md:mt-16 p-4 text-center bg-gray-50 border dark:border-none border-gray-100 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <h5 className="mb-2 text-3xl font-bold text-gray-900 dark:text-white">Set up your Wallet</h5>
             <div className="inline-block md:px-10 p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-900/40 dark:text-blue-400" role="alert">
-            Claim your ₹500 bonus now by setting up your wallet!            </div>
+            Claim your ₹500 bonus now by setting up your wallet!            
+            </div>
             {/* <p className="mb-5 text-base text-gray-500 sm:text-lg dark:text-gray-400">
             </p> */}
             <div className="items-center justify-center flex flex-col mt-6">
 
               
  
-                <OTPInput
+                <OTPInput onComplete={(e)=>{setshowconfirmPin(true)}}
+                value={walletPin} onChange={(e)=>setwalletPin(e)}
                 maxLength={6}
-                containerClassName="group flex flex-col items-center has-[:disabled]:opacity-30"
+                containerClassName={`${showconfirmPin && "hidden"} trc group flex flex-col items-center has-[:disabled]:opacity-30`}
                 render={({ slots }) => (
                     <>
                     <div className='w-full flex justify-start my-4'>
@@ -81,13 +109,51 @@ const SetUpPage: React.FunctionComponent<ISetUpPageProps> = (props) => {
                     </>
                 )}
                 />
+                <OTPInput onComplete={(e)=>{checkPINS();}}
+                value={confirmPin} onChange={(e)=>setconfirmPin(e)}
+                maxLength={6}
+                containerClassName={`${!showconfirmPin && "hidden"} trc group flex flex-col items-center has-[:disabled]:opacity-30`}
+                render={({ slots }) => (
+                    <>
+                    <div className='w-full flex justify-start my-4'>
+                <p className='text-base text-gray-500 dark:text-gray-400'>
+                  {showconfirmPin?"Confirm your PIN":"Create your 6-digit wallet PIN"}
+                </p>
+              </div>
+                    <div className='flex items-center'>
+                    <div className="flex">
+                        {slots.slice(0, 3).map((slot, idx) => (
+                        <Slot key={idx} {...slot} />
+                        ))}
+                    </div>
+                
+                    <FakeDash />
+                
+                    <div className="flex">
+                        {slots.slice(3).map((slot, idx) => (
+                        <Slot key={idx} {...slot} />
+                        ))}
+                    </div>
+                    </div>
+                    </>
+                )}
+                />
 
-              <button type="button" className="my-10 max-w-xs w-full sm:max-w-sm flex justify-center text-white bg-blue-700 hover:bg-blue-800 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center dark:bg-blue-600 dark:hover:bg-blue-700 trc active:scale-[0.95]">
-              Next
-              <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-              </svg>
+                <div className='mt-6 w-full max-w-md flex flex-col items-center'>
+                <div className={`${pinError.length ? "opacity-100":"text-transparent"} trc max-w-xs w-full opacity-0 px-4 py-2 text-xs text-green-800 rounded-lg ${pinError=="Check your PIN again!" && "bg-red-50 text-red-800 dark:text-red-400"} bg-green-50 dark:bg-gray-900/40 dark:text-green-400 select-none`} role="alert">
+                  {pinError}
+                 
+                  <span className='text-transparent'>_</span>
+                </div>
+                <div className='flex mt-4 flex-wrap w-full max-w-md justify-evenly'>
+              <button onClick={()=>reset()} type="button" className=" max-w-xs sm:max-w-sm flex justify-center text-gray-700 dark:text-white bg-gray-200 hover:bg-gray-300 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center dark:bg-gray-700 dark:hover:bg-gray-800/90 trc active:scale-[0.95]">
+              Reset
               </button>
+              <button onClick={()=>handleSubmit()} type="button" className=" max-w-xs sm:max-w-sm flex justify-center text-white bg-blue-700 hover:bg-blue-800 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center dark:bg-blue-600 dark:hover:bg-blue-700 trc active:scale-[0.95]">
+             Submit
+              </button>
+              </div>
+              </div>
             </div>
         </div>
 
