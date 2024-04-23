@@ -6,7 +6,7 @@ interface IHistoryDataProps {
 
 const HistoryData: React.FunctionComponent<IHistoryDataProps> = (props) => {
     const queryClient=useQueryClient()
-    const getAllTransactions=async()=>{ return (await fetch('/api/transactions')).json() }
+    const getAllTransactions=async()=>{ return (await fetch('/api/transactionshistory')).json() }
     const transactionQuery=useQuery({queryKey:['getAllTransactions'],queryFn:getAllTransactions})
     const [modalData,setmodalData]=useState({
       name:'',email:'',img:'',amount:'',date:'',desc:''

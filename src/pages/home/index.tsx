@@ -13,7 +13,7 @@ interface IFrontProps {
 const Front: React.FunctionComponent<IFrontProps> = (props) => {
   const { data: session } = useSession();
   const [sessionData,setsessionData]=useState(session)
-  const getBalance=async()=>{ return (await fetch("/api/account")).json() }
+  const getBalance=async()=>{ return (await fetch("/api/accountbalance")).json() }
   
   const queryClient=useQueryClient()
   const balanceQuery=useQuery({queryKey:['currentBalance'],queryFn:getBalance})
