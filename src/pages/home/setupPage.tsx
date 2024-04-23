@@ -65,9 +65,36 @@ const SetUpPage: React.FunctionComponent<ISetUpPageProps> = (props) => {
         setpinError("")
         setshowconfirmPin(false);
       }
-      const handleSubmit=()=>{
+
+
+      const transferMoney=async()=>{
+        try {
+          const response=await fetch('/api/setupwallet',{
+            method:'post',
+            headers:{
+            Accept:'application.json',
+            'Content-Type':'application/json'
+          },
+          body:JSON.stringify({walletPin:walletPin})
+        })
+        const result=await response.json()
+        if(response.ok){
+          if(result?.response==true){
+            console.log("this is true")
+          }
+        }
+        return result;
+        } catch (error) {
+          return error
+        }
+       
+      }
+     
+      const handleSubmit=async()=>{
         const isSame=checkPINS()
-        console.log(isSame)
+        if(isSame){
+        const transfer=await transferMoney();
+        console.log(transfer)}
       }
 
   return <>
