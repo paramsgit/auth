@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 import react, { useEffect, useState } from 'react';
 
 const numberToText = require('number-to-text')
@@ -31,7 +32,7 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss})
     const [inputFocused2,setinputFocused2]=useState(false)
     const [agreedCheck,setagreedCheck]=useState(false)
     const [amountInWords,setamountInWords]=useState("")
-    
+    const router=useRouter();
     const queryClient=useQueryClient()
     const usersQuery=useQuery({queryKey:['allUsers'],queryFn:getAllUsers})
     const filteredData = usersQuery?.data?.allUsers?.filter((item:userTemplate) =>
@@ -69,8 +70,8 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss})
       const result=await response.json()
       console.log(result)
       if(response.ok){
-        if(result.message=="success"){
-         await fnss()
+        if(result.queueItem){
+        router.push(`/payment/${result.queueItem?._id}`)
         }
       }
       return result;
