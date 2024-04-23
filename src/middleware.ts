@@ -8,7 +8,7 @@ export async function middleware(req: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET,
     secureCookie: process.env.NODE_ENV === "production",
   });
-  if (pathname == "/" || pathname == "/history" || pathname == "/settings") {
+  if (pathname == "/" || pathname == "/history" || pathname == "/settings" || pathname == "/payment") {
     if (!session)
       return NextResponse.redirect(`${process.env.NEXTAUTH_URL}/auth`);
   }

@@ -58,7 +58,7 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss})
 
     const transferMoney=async()=>{
       try {
-        const response=await fetch('/api/transfer',{
+        const response=await fetch('/api/createtransaction',{
           method:'POST',
           headers:{
           Accept:'application.json',
@@ -67,6 +67,7 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss})
         body:JSON.stringify({to:ReceiverId,amount:amount})
       })
       const result=await response.json()
+      console.log(result)
       if(response.ok){
         if(result.message=="success"){
          await fnss()

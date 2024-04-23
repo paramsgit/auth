@@ -4,6 +4,7 @@ import AccountBalance from '@/models/accountSchema'
 import TransactionHistory from '@/models/transactionHistory'
 import mongoose from 'mongoose'
 import User from '@/models/User'
+import TransactionQueue from '@/models/queueSchema'
 export default async function transfer(req: NextApiRequest, res: NextApiResponse) {
     if(req.method!==("POST" || "post")){
         return res.status(400).json({message:"Invalid request"})
@@ -27,11 +28,16 @@ export default async function transfer(req: NextApiRequest, res: NextApiResponse
             return res.status(400).json({message:"Recipient not found"}) 
         }
 
+        const queueItem= new TransactionQueue({
+            receiver:toUser,
+            amount:amount
+        })
+        await queueItem.save();
+
         
           
-       return res.status(200).json({message:"success"})
+       return res.status(200).json({message:"Added to queue",queueItem})
     } catch (error) {
-        console.log(error,"we came here")
         return res.status(500).json({message:(error as Error).message})
     }
 

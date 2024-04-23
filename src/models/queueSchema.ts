@@ -1,11 +1,6 @@
 import mongoose from "mongoose"
 
 const TQueue= new mongoose.Schema({
-    sender:{
-        type: mongoose.Schema.Types.ObjectId, // Reference to User model
-        ref: 'User',
-        required: false
-    },
     receiver:{
         type: mongoose.Schema.Types.ObjectId, 
         ref: 'User',
