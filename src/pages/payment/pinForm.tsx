@@ -1,24 +1,28 @@
 import  React,{useEffect, useState} from 'react';
 import { useQuery,useQueryClient } from '@tanstack/react-query';
-import { OTPInput } from 'input-otp'
+import { OTPInput,SlotProps } from 'input-otp'
 import { Slot,FakeCaret,FakeDash } from '@/utils/helper';
 import { useSession } from 'next-auth/react';
+import { cn } from '@/utils/cn';
+
 const numberToText = require('number-to-text')
 require('number-to-text/converters/en-us');
 interface IPinFormProps {
     qid:string
 }
-
+type TransactionDataType = {
+  item: any; // Set the type of 'item' to any
+};
 const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
   const [walletPin,setwalletPin]=useState("")
   const [pinError,setpinError]=useState("")
   const [queryError,setqueryError]=useState("")
-  const [transactionData,settransactionData]=useState({item:undefined})
+  const [transactionData,settransactionData]=useState<TransactionDataType>({item:undefined})
   const [amountInWords,setamountInWords]=useState("")
   const { data: session } = useSession();
   const [sessionData,setsessionData]=useState(session)
   useEffect(() => {
-    // setamountInWords(numberToText.convertToText(6666))
+    
     const getQueueItem=async()=>{
       try {
         const response=await fetch('/api/getqueueitem',{
@@ -54,7 +58,8 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
  
 
      
-
+      const convertToWords=(e:number)=>{return numberToText.convertToText(e,{case:"upperCase"})
+    }
       const reset=()=>{
         setwalletPin("");
         setpinError("")
@@ -63,6 +68,44 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
      
       const handleSubmit=async()=>{
       
+      }
+
+       function Slot(props: SlotProps) {
+        return (
+          <div
+            className={cn(
+              'relative w-10 h-14 md:w-16 md:h-[5.25rem] text-[2rem] md:text-[3rem]',
+              'flex items-center justify-center',
+              'transition-all duration-300',
+              'border-border border-gray-400 border-y border-r first:border-l first:rounded-l-md last:rounded-r-md',
+              'group-hover:border-accent-foreground/20 group-focus-within:border-accent-foreground/20',
+              'outline outline-0 outline-accent-foreground/20',
+              { 'outline-4 outline-accent-foreground': props.isActive },
+              'outline-blue-700 dark:outline-white'
+            )}
+          >
+            {props.char !== null && <div>{props.char}</div>}
+            {props.hasFakeCaret && <FakeCaret />}
+          </div>
+        )
+      }
+       
+      // You can emulate a fake textbox caret!
+      function FakeCaret() {
+        return (
+          <div className="absolute pointer-events-none inset-0 flex items-center justify-center animate-caret-blink">
+            <div className="w-px h-8 bg-white" />
+          </div>
+        )
+      }
+       
+      // Inspired by Stripe's MFA input.
+      function FakeDash() {
+        return (
+          <div className="flex w-10 justify-center items-center">
+            <div className="w-3 h-1 rounded-full bg-border bg-gray-400" />
+          </div>
+        )
       }
 
   return <>
@@ -135,12 +178,12 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
           <div className='accountDiv max-w-sm m-2 rounded-full bg-white dark:bg-zinc-950 px-4 py-3 shadow-md'>
         <div className='flex items-center'>
           <div>
-            <img className='w-10 h-19 rounded-full' src={session?.user?.image?session?.user?.image:""} alt="" />
+            <img className='w-10 h-19 rounded-full' src={transactionData.item?.receiver?.image} alt="" />
             
           </div>
           <div className='flex flex-col mx-3'>
-            <h1 className='text-gray-800 dark:text-gray-400 text-sm font-[Ubuntu]'>{session?.user?.name}</h1>
-            <h2 className='text-gray-500 text-xs'>{session?.user?.email}</h2>
+            <h1 className='text-gray-800 dark:text-gray-400 text-sm font-[Ubuntu]'>{transactionData.item?.receiver?.name}</h1>
+            <h2 className='text-gray-500 text-xs'>{transactionData.item?.receiver?.email}</h2>
           </div>
         </div>
       </div>            </div>
@@ -149,11 +192,11 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
       <div className='flex flex-col justify-center items-center w-full py-4'>
       <div className='flex items-center flex-wrap'>
         <p className='text-xl md:text-2xl text-gray-600 dark:text-gray-400'>Amount: </p>
-        <p className='text-2xl md:text-3xl text-gray-700 dark:text-gray-300 mx-2'>₹500</p>
+        <p className='text-2xl md:text-3xl text-gray-700 dark:text-gray-300 mx-2'>₹{transactionData.item?.amount}</p>
      
       </div>
     <div className='text-gray-500 text-sm'>
-{amountInWords}
+{convertToWords(transactionData.item?.amount)}
     </div>
       </div>
           

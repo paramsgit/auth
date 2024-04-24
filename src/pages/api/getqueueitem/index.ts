@@ -18,7 +18,7 @@ export default async function balance(req: NextApiRequest, res: NextApiResponse)
             return res.status(400).json({response:false,message:"No id found. Please retry"})
 
         }
-        const item=await TransactionQueue.findById(id)
+        const item=await TransactionQueue.findById(id).populate('receiver');
         if(!item){
             return res.status(400).json({response:false,message:"No item found. Please retry"})
         }
