@@ -67,7 +67,21 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
 
      
       const handleSubmit=async()=>{
-      
+        try {
+          const response=await fetch('/api/transfer',{
+            method:'POST',
+            headers:{
+            Accept:'application.json',
+            'Content-Type':'application/json'
+          },
+          body:JSON.stringify({id:qid,pin:walletPin})
+        })
+        const result=await response.json()
+        console.log(result)
+        
+        } catch (error) {
+          console.log(error)
+        }
       }
 
        function Slot(props: SlotProps) {
