@@ -12,7 +12,7 @@ export default async function transfer(req: NextApiRequest, res: NextApiResponse
     }
     const userToken=req.cookies['next-auth.session-token']
     if(!userToken){
-        return res.status(401).json({error: "Please login"})
+        return res.status(401).json({message: "Please login"})
     }
     const userData=await verifyToken(userToken)
     if(!userData.user)
@@ -100,7 +100,7 @@ export default async function transfer(req: NextApiRequest, res: NextApiResponse
 
         
         
-       return res.status(200).json({message:"success",response:true})
+       return res.status(200).json({message:"Transfer Success",response:true})
     } catch (error) {
         console.log(error,"we came here")
         return res.status(500).json({message:(error as Error).message})

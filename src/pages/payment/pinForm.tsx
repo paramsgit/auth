@@ -16,6 +16,8 @@ type TransactionDataType = {
 const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
   const [walletPin,setwalletPin]=useState("")
   const [pinError,setpinError]=useState("")
+  const [trans,settrans]=useState(false)
+  const [isSubmitting,setisSubmitting]=useState(false)
   const [queryError,setqueryError]=useState("")
   const [transactionData,settransactionData]=useState<TransactionDataType>({item:undefined})
   const [amountInWords,setamountInWords]=useState("")
@@ -67,6 +69,9 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
 
      
       const handleSubmit=async()=>{
+        setpinError("")
+        settrans(false)
+        setisSubmitting(true)
         try {
           const response=await fetch('/api/transfer',{
             method:'POST',
@@ -77,11 +82,19 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
           body:JSON.stringify({id:qid,pin:walletPin})
         })
         const result=await response.json()
+        if(result.message){
+          setpinError(result.message)
+        }
+        if(response.ok){
+          settrans(true)
+        }
         console.log(result)
         
         } catch (error) {
           console.log(error)
         }
+
+        setisSubmitting(false)
       }
 
        function Slot(props: SlotProps) {
@@ -249,10 +262,16 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
 
               <div className='mt-6 w-full max-w-md flex flex-col items-center'>
               
+              <div className={`${pinError.length ? "opacity-100":"text-transparent"} trc max-w-xs w-full opacity-0 px-4 py-2 text-xs text-green-800 rounded-lg ${!trans && "bg-red-50 text-red-800 dark:text-red-400"} bg-green-50 dark:bg-gray-900/40 dark:text-green-400 select-none`} role="alert">
+                  {pinError}
+                 
+                  <span className='text-transparent'>_</span>
+                </div>
+
               <div className='flex mt-4 flex-wrap w-full max-w-md justify-evenly'>
            
-            <button onClick={()=>handleSubmit()} type="button" className="w-full max-w-xs sm:max-w-sm flex justify-center text-white bg-blue-700 hover:bg-blue-800 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center dark:bg-blue-600 dark:hover:bg-blue-700 trc active:scale-[0.95]">
-           Submit
+            <button onClick={()=>handleSubmit()} type="button" className={`${isSubmitting && "disabled"} w-full max-w-xs sm:max-w-sm flex justify-center text-white bg-blue-700 hover:bg-blue-800 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center dark:bg-blue-600 dark:hover:bg-blue-700 trc active:scale-[0.95]`}>
+           {isSubmitting?"Submitting":"Submit"}
             </button>
             </div>
             </div>
