@@ -3,6 +3,8 @@ import { useQuery,useQueryClient } from '@tanstack/react-query';
 import { OTPInput,SlotProps } from 'input-otp'
 import { Slot,FakeCaret,FakeDash } from '@/utils/helper';
 import { useSession } from 'next-auth/react';
+import ConfettiExplosion from 'react-confetti-explosion';
+import { playSuccessSound } from '@/utils/audioPlayer';
 import { cn } from '@/utils/cn';
 
 const numberToText = require('number-to-text')
@@ -21,6 +23,7 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
   const [queryError,setqueryError]=useState("")
   const [transactionData,settransactionData]=useState<TransactionDataType>({item:undefined})
   const [amountInWords,setamountInWords]=useState("")
+  const [isExploding, setIsExploding] = useState(false);
   const { data: session } = useSession();
   const [sessionData,setsessionData]=useState(session)
   useEffect(() => {
@@ -87,6 +90,8 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
         }
         if(response.ok){
           settrans(true)
+          setIsExploding(true)
+          playSuccessSound();
         }
         console.log(result)
         
@@ -272,7 +277,9 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
            
             <button onClick={()=>handleSubmit()} type="button" className={`${isSubmitting && "disabled"} w-full max-w-xs sm:max-w-sm flex justify-center text-white bg-blue-700 hover:bg-blue-800 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center dark:bg-blue-600 dark:hover:bg-blue-700 trc active:scale-[0.95]`}>
            {isSubmitting?"Submitting":"Submit"}
+           {isExploding && <ConfettiExplosion force={0.8} duration={3000} particleCount={250} width={1600} onComplete={()=>setIsExploding(false)}/>}
             </button>
+           
             </div>
             </div>
           </div>
