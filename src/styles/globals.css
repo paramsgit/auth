@@ -43,6 +43,10 @@ input:-webkit-autofill:active {
   opacity: 0.7;
   pointer-events: none;
 }
+.cdisabled{
+  opacity: 0.5;
+  
+}
 
 /* body {
   color: rgb(var(--foreground-rgb));

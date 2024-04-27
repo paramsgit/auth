@@ -20,11 +20,11 @@ export default async function balance(req: NextApiRequest, res: NextApiResponse)
         }).sort({ "createdAt": 1 }).populate('sender receiver');
 
         const reversedTransactions=transactions.reverse();
-        setTimeout(() => {
+        
             
        
         return res.status(200).json({transactions:reversedTransactions,userId:userId})
-    }, 4000);
+   
     } catch (error) {
         return res.status(500).json({message:(error as Error).message})
     }

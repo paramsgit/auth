@@ -6,6 +6,7 @@ interface IHistoryDataProps {
 
 const HistoryData: React.FunctionComponent<IHistoryDataProps> = (props) => {
     const queryClient=useQueryClient()
+    const [showAll,setshowAll]=useState(false)
     const getAllTransactions=async()=>{ return (await fetch('/api/transactionshistory')).json() }
     const transactionQuery=useQuery({queryKey:['getAllTransactions'],queryFn:getAllTransactions})
     const [modalData,setmodalData]=useState({
@@ -38,6 +39,22 @@ const HistoryData: React.FunctionComponent<IHistoryDataProps> = (props) => {
             <div className="flex items-center justify-between flex-column md:flex-row flex-wrap py-4 bg-white dark:bg-gray-900 rounded-t-lg">
              
          <h1 className="text-gray-600 dark:text-white px-3 md:px-6">History</h1>
+         {/* <button onClick={()=>setshowAll(!showAll)}>{showAll?"SHow":"Hide"}</button> */}
+         <button className='p-2 mx-2 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-md' onClick={() => setshowAll(!showAll)}>
+        { !showAll?
+       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className=" trc bi bi-eye" viewBox="0 0 16 16">
+       <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8M1.173 8a13 13 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5s3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5s-3.879-1.168-5.168-2.457A13 13 0 0 1 1.172 8z"/>
+       <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5M4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0"/>
+     </svg>
+      :
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="trc bi bi-eye-slash" viewBox="0 0 16 16">
+  <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7 7 0 0 0-2.79.588l.77.771A6 6 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13 13 0 0 1 14.828 8q-.086.13-.195.288c-.335.48-.83 1.12-1.465 1.755q-.247.248-.517.486z"/>
+  <path d="M11.297 9.176a3.5 3.5 0 0 0-4.474-4.474l.823.823a2.5 2.5 0 0 1 2.829 2.829zm-2.943 1.299.822.822a3.5 3.5 0 0 1-4.474-4.474l.823.823a2.5 2.5 0 0 0 2.829 2.829"/>
+  <path d="M3.35 5.47q-.27.24-.518.487A13 13 0 0 0 1.172 8l.195.288c.335.48.83 1.12 1.465 1.755C4.121 11.332 5.881 12.5 8 12.5c.716 0 1.39-.133 2.02-.36l.77.772A7 7 0 0 1 8 13.5C3 13.5 0 8 0 8s.939-1.721 2.641-3.238l.708.709zm10.296 8.884-12-12 .708-.708 12 12z"/>
+</svg> 
+      }
+
+      </button>
             </div>
             {/* for small devices */}
             <div className="sm:hidden w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -90,49 +107,60 @@ const HistoryData: React.FunctionComponent<IHistoryDataProps> = (props) => {
               (transactionQuery?.data?.transactions.length
                 ?
                 transactionQuery?.data?.transactions?.map((trsn:any)=>{
-                  return <div key={trsn?._id} className="bg-white flex justify-between border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/50"
-                  onClick={()=>{setmodalData({
-                    img: trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.image:trsn?.sender?.image,
-                    name:trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.name:trsn?.sender?.name,
-                    email:trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.email:trsn?.sender?.email,
-                    amount:trsn?.sender?._id==transactionQuery?.data?.userId?`-${trsn.amount}`:`+${trsn.amount}`,
-                    date:formatDate(trsn?.createdAt),
-                    desc:trsn.description
-
-                  });openHistoryModal()}}
-
-                  >
-                 
-                  <div
-                    
-                    className="flex items-center pl-3 xsm:pr-8 py-4 text-gray-900 whitespace-nowrap dark:text-white"
-                  >
-                    <img
-                      className="w-9 h-9 rounded-full"
-                      src=
-                      {trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.image:trsn?.sender?.image}
-                      alt="User"
-                    />
-                    <div className="ps-3">
-                      <div className="text-sm font-semibold">
-        
-                      {trimmer(trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.name:trsn?.sender?.name,16)}
-                        </div>
-                      <div className="font-normal text-gray-500">
-                      {trimmer(trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.email:trsn?.sender?.email,18)}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="px-2 py-4 "> 
-                    <div className={`flex flex-col font-bold ${trsn?.sender?._id==transactionQuery?.data?.userId?"text-red-600":"text-green-600"}`}>            
-                      {trsn?.sender?._id==transactionQuery?.data?.userId?"-":"+"} 
-                      {trsn.amount}
-                      
-                  <span className="font-normal text-xs text-gray-600">{formatDate(trsn?.createdAt)}</span></div>
-                  </div>
                   
-                </div>
-                }) :
+                    if(showAll || trsn.completed){
+                      return <div key={trsn?._id} className={`${!(trsn.completed) && "cdisabled"} bg-white flex justify-between border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/50`}
+                      onClick={()=>{setmodalData({
+                        img: trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.image:trsn?.sender?.image,
+                        name:trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.name:trsn?.sender?.name,
+                        email:trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.email:trsn?.sender?.email,
+                        amount:trsn?.sender?._id==transactionQuery?.data?.userId?`-${trsn.amount}`:`+${trsn.amount}`,
+                        date:formatDate(trsn?.createdAt),
+                        desc:trsn.description
+    
+                      });openHistoryModal()}}
+    
+                      >
+                     
+                      <div
+                        
+                        className="flex items-center pl-3 xsm:pr-8 py-4 text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        <img
+                          className="w-9 h-9 rounded-full"
+                          src=
+                          {trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.image:trsn?.sender?.image}
+                          alt="User"
+                        />
+                        <div className="ps-3">
+                          <div className="text-sm font-semibold">
+            
+                          {trimmer(trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.name:trsn?.sender?.name,16)}
+                            </div>
+                          <div className="font-normal text-gray-500">
+                          {trimmer(trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.email:trsn?.sender?.email,18)}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="px-2 py-4 "> 
+                        <div className={`flex flex-col font-bold ${trsn?.sender?._id==transactionQuery?.data?.userId?"text-red-600":"text-green-600"} ${!trsn.completed && "text-yellow-600"}`}>            
+                          {trsn?.sender?._id==transactionQuery?.data?.userId?"-":"+"} 
+                          {trsn.amount}
+                          
+                      <span className="font-normal text-xs text-gray-600">{formatDate(trsn?.createdAt)}</span></div>
+                      </div>
+                      
+                    </div>
+                    }
+                    else{
+                      return null
+                    }
+                   
+                }) 
+                
+                
+                
+                :
                 <div className="bg-white flex justify-between border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/50" >
                
                 <div className="m-auto flex items-center pl-3 xsm:pr-8 py-4 text-gray-900 whitespace-nowrap dark:text-white">
@@ -250,7 +278,8 @@ const HistoryData: React.FunctionComponent<IHistoryDataProps> = (props) => {
                 : 
                 (   transactionQuery?.data?.transactions?.length?
                       transactionQuery?.data?.transactions?.map((trsn:any)=>{
-                        return <tr key={`2${trsn?._id}`} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/50" 
+                        if(showAll || trsn.completed){
+                        return <tr key={`2${trsn?._id}`} className={`${!trsn.completed && "cdisabled"} bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/50`} 
                         
                         onClick={()=>{setmodalData({
                           img: trsn?.sender?._id==transactionQuery?.data?.userId?trsn?.receiver?.image:trsn?.sender?.image,
@@ -285,13 +314,14 @@ const HistoryData: React.FunctionComponent<IHistoryDataProps> = (props) => {
                           </div>
                         </th>
                         
-                        <td className={`xl:px-16 lg:px-12 px-8 py-4 text-green-600  font-bold ${trsn?.sender?._id==transactionQuery?.data?.userId?"text-red-600":"text-green-600"}`}> {trsn?.sender?._id==transactionQuery?.data?.userId?"-":"+"} 
+                        <td className={`xl:px-16 lg:px-12 px-8 py-4 text-green-600  font-bold ${trsn?.sender?._id==transactionQuery?.data?.userId?"text-red-600":"text-green-600"} ${!trsn.completed && "text-yellow-600"}`}> {trsn?.sender?._id==transactionQuery?.data?.userId?"-":"+"} 
                             {trsn.amount}</td>
                         <td className="xl:px-16 lg:px-12 px-8 py-4">
                         <span>{formatDate(trsn?.createdAt)}</span>
                         </td>
                         
                       </tr>
+                        }
                       })
                       :
 
