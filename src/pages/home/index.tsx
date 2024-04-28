@@ -17,10 +17,7 @@ interface IFrontProps {
 const Front: React.FunctionComponent<IFrontProps> = (props) => {
   const { data: session } = useSession();
   const [sessionData,setsessionData]=useState(session)
-  const [socket, setSocket] = useState<any>(null);
-  const [count,setcount]=useState(0)
   const getBalance=async()=>{ return (await fetch("/api/accountbalance")).json() }
-  const socketRef = useRef<any>();
   const queryClient=useQueryClient()
   const balanceQuery=useQuery({queryKey:['currentBalance'],queryFn:getBalance})
   const updateBalance=async ()=>{ await queryClient.invalidateQueries({queryKey: ['currentBalance']}); }
@@ -32,31 +29,13 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
 
     
   
-    useEffect(() => {
-     
-      if (!socket) {
-        initSocket();
-    }else{
-      console.log("socket already present")
-    }
-    }, [socket]);
-    const initSocket = async () => {
-      await fetch("/api/socket")
-      let socket = io();
-      socket.on("chat", (message:any) => {
-      console.log("We got a msg",message)
-        });
-        console.log(socket)
-      setSocket(socket);
-  };
-  
   
   return <>
 
   {!balanceQuery || !(balanceQuery.data)? "Loading..":
   balanceQuery.data?.response?
   <div className='flex items-start flex-col md:flex-row w-full '>
- <button onClick={()=>{updateBalance();setcount(count+1)}}>data</button>
+ 
     <div className="flex justify-center left w-full md:w-1/2 p-2 md:p-10 lg:pl-24">
     <div className=''>
         <div className={`heading px-4 md:px-10 overflow-hidden`}>

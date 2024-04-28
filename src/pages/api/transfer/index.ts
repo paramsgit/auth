@@ -6,6 +6,7 @@ import mongoose from 'mongoose'
 import User from '@/models/User'
 import bcrypt from 'bcryptjs'
 import TransactionQueue from '@/models/queueSchema'
+
 export default async function transfer(req: NextApiRequest, res: NextApiResponse) {
     if(req.method!==("POST" || "post")){
         return res.status(400).json({message:"Invalid request"})
@@ -97,7 +98,6 @@ export default async function transfer(req: NextApiRequest, res: NextApiResponse
             { new: true } // Return the updated document
         ); 
         const deletedQueueItem = await TransactionQueue.findByIdAndDelete(id);
-
         
         
        return res.status(200).json({message:"Transfer Success",response:true})
