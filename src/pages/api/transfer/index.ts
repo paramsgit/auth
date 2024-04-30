@@ -6,6 +6,8 @@ import mongoose from 'mongoose'
 import User from '@/models/User'
 import bcrypt from 'bcryptjs'
 import TransactionQueue from '@/models/queueSchema'
+import FirebaseToken from '@/models/firebaseTokenSchema'
+import { sendNotification } from '@/utils/sendNotification'
 
 export default async function transfer(req: NextApiRequest, res: NextApiResponse) {
     if(req.method!==("POST" || "post")){
@@ -49,7 +51,6 @@ export default async function transfer(req: NextApiRequest, res: NextApiResponse
             amount:amount
         })
         await transaction.save()
-        console.log(transaction)
 
         // check accounts and their balance
         const account =await AccountBalance.findOne({userId:userId}).session(session);
@@ -100,7 +101,24 @@ export default async function transfer(req: NextApiRequest, res: NextApiResponse
         const deletedQueueItem = await TransactionQueue.findByIdAndDelete(id);
         
         
-       return res.status(200).json({message:"Transfer Success",response:true})
+        res.status(200).json({message:"Transfer Success",response:true});
+        try {
+            let amountinString=amount+''
+            console.log(amountinString)
+            const FcmToken=await FirebaseToken.findOne({user:toUser})
+            if(FcmToken){
+                sendNotification(FcmToken.token,{
+                    title:"Recieved",body:amountinString
+                })
+            }
+        } catch (error) {
+            console.log(error)
+        }
+
+      
+
+        return;
+
     } catch (error) {
         console.log(error,"we came here")
         return res.status(500).json({message:(error as Error).message})

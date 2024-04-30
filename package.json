@@ -17,6 +17,8 @@
     "bcryptjs": "^2.4.3",
     "chart.js": "^4.4.2",
     "clsx": "^2.1.0",
+    "firebase": "^10.11.1",
+    "firebase-admin": "^12.1.0",
     "fs": "^0.0.1-security",
     "howler": "^2.2.4",
     "input-otp": "^1.2.4",

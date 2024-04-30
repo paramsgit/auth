@@ -33,3 +33,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env
+
+
+src/utils/firebase.ts
+src/utils/useFCMToken.ts
+public/firebase-messaging-sw.js
+service.json

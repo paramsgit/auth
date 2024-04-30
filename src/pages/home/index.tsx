@@ -27,6 +27,7 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
     showTrsForm: state.showTrsForm,
   }));
 
+
     
   
   
@@ -35,7 +36,7 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
   {!balanceQuery || !(balanceQuery.data)? "Loading..":
   balanceQuery.data?.response?
   <div className='flex items-start flex-col md:flex-row w-full '>
- 
+ <button onClick={()=>updateBalance()}>data</button>
     <div className="flex justify-center left w-full md:w-1/2 p-2 md:p-10 lg:pl-24">
     <div className=''>
         <div className={`heading px-4 md:px-10 overflow-hidden`}>
