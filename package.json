@@ -20,6 +20,7 @@
     "firebase": "^10.11.1",
     "firebase-admin": "^12.1.0",
     "fs": "^0.0.1-security",
+    "glamor": "^2.20.40",
     "howler": "^2.2.4",
     "input-otp": "^1.2.4",
     "jsonwebtoken": "^9.0.2",

@@ -38,6 +38,24 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: #8d8d8d;
     transition: background-color 5000s ease-in-out 0s;
 }
+.Toastify__toast{
+  @apply border border-gray-100 dark:border-gray-800;
+  
+  }
+  .Toastify__toast-theme--light{
+  background: rgb(252, 253, 255)!important;
+  }
+
+
+  .Toastify__progress-bar-theme--light {
+    background: #3098ff!important;
+  }
+  .Toastify__progress-bar-theme--dark {
+    background: #767676!important;
+  }
+  .Toastify__progress-bar--wrp{
+    height: 2px!important;
+  }
 
 .disabled{
   opacity: 0.7;

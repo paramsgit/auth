@@ -71,7 +71,7 @@ const Graph: React.FunctionComponent<IGraphProps> = (props) => {
   
   return <>
   <div id='o098'>
- <Line data={data} options={CHARTOPTIONS}/>
+ {/* <Line data={data} options={CHARTOPTIONS}/> */}
   </div>
   </>;
 };

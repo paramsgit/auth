@@ -5,17 +5,21 @@ import { Slot,FakeCaret,FakeDash } from '@/utils/helper';
 import { useSession } from 'next-auth/react';
 import ConfettiExplosion from 'react-confetti-explosion';
 import { playSuccessSound } from '@/utils/audioPlayer';
+import { useRouter } from 'next/router';
 import { cn } from '@/utils/cn';
 
 const numberToText = require('number-to-text')
 require('number-to-text/converters/en-us');
+
 interface IPinFormProps {
     qid:string
 }
 type TransactionDataType = {
   item: any; // Set the type of 'item' to any
 };
+
 const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
+
   const [walletPin,setwalletPin]=useState("")
   const [pinError,setpinError]=useState("")
   const [trans,settrans]=useState(false)
@@ -24,53 +28,49 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
   const [transactionData,settransactionData]=useState<TransactionDataType>({item:undefined})
   const [amountInWords,setamountInWords]=useState("")
   const [isExploding, setIsExploding] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
   const { data: session } = useSession();
+  const router=useRouter();
   const [sessionData,setsessionData]=useState(session)
-  useEffect(() => {
-    
-    const getQueueItem=async()=>{
-      try {
-        const response=await fetch('/api/getqueueitem',{
-          method:'POST',
-          headers:{
-          Accept:'application.json',
-          'Content-Type':'application/json'
-        },
-        body:JSON.stringify({id:qid})
-      })
-      const result=await response.json()
-      console.log(result)
-      if(response.ok){
-        if(result.item)
-        settransactionData({item:result.item})
-      else setqueryError("Oops! Something went wrong");
-      }else{
-        console.log(result)
-      result.message?setqueryError(result.message):setqueryError("Oops Something went wrong")      }
-      } catch (error) {
-        console.log(error)
-        setqueryError("Something went wrong")
-      }
-     
-    }
-    getQueueItem()
-  }, [])
 
- 
+      useEffect(() => {
+        
+        const getQueueItem=async()=>{
+          try {
+            const response=await fetch('/api/getqueueitem',{
+              method:'POST',
+              headers:{
+              Accept:'application.json',
+              'Content-Type':'application/json'
+            },
+            body:JSON.stringify({id:qid})
+          })
+          const result=await response.json()
+          console.log(result)
+          if(response.ok){
+            if(result.item)
+            settransactionData({item:result.item})
+          else setqueryError("Oops! Something went wrong");
+          }else{
+            console.log(result)
+          result.message?setqueryError(result.message):setqueryError("Oops Something went wrong")      }
+          } catch (error) {
+            console.log(error)
+            setqueryError("Something went wrong")
+          }
+        
+        }
+        getQueueItem()
+      }, [])
 
-
-  
- 
-
-     
       const convertToWords=(e:number)=>{return numberToText.convertToText(e,{case:"upperCase"})
-    }
+      }
+
       const reset=()=>{
         setwalletPin("");
         setpinError("")
       }
 
-     
       const handleSubmit=async()=>{
         setpinError("")
         settrans(false)
@@ -91,7 +91,9 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
         if(response.ok){
           settrans(true)
           setIsExploding(true)
+          setIsCompleted(true);
           playSuccessSound();
+          
         }
         console.log(result)
         
@@ -141,12 +143,13 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
       }
 
   return <>
-
+        {/* if any error while fetching transaction request then show error else show skelton loading until data is not received */}
          { queryError ?
          queryError
         :
         (!(transactionData.item )
         ?
+        // this is loading div
         <div className="w-full max-w-3xl mt-8 md:mt-16 p-4 text-center bg-gray-50 border dark:border-none border-gray-100 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
         <h5 className=" text-md font-normal inline-block bg-[#eee] dark:bg-[#111827f2] rounded-2xl text-transparent text-xs h_skelton3"> 
         Send money to
@@ -202,7 +205,9 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
         </div>
     </div>
           
-          :<div className="w-full max-w-3xl mt-8 md:mt-16 p-4 text-center bg-gray-50 border dark:border-none border-gray-100 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+          :
+          
+          <div className="w-full max-w-3xl mt-8 md:mt-16 p-4 text-center bg-gray-50 border dark:border-none border-gray-100 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
           <h5 className=" text-md font-normal text-gray-500 "> 
           Send money to
           </h5>
@@ -235,11 +240,11 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
           <div className="items-center justify-center flex flex-col mt-6">
 
             
-
+             <div className={`px-4 ${isCompleted ? "h-0":"h-[130px] md:h-[150px]"} overflow-hidden transition-all ease-linear duration-500`}>
               <OTPInput onComplete={(e)=>{}}
               value={walletPin} onChange={(e)=>setwalletPin(e)}
               maxLength={6}
-              containerClassName={`  group flex flex-col items-center has-[:disabled]:opacity-30`}
+              containerClassName={` group flex flex-col items-center has-[:disabled]:opacity-30`}
               render={({ slots }) => (
                   <>
                   <div className='w-full flex justify-start my-4'>
@@ -263,8 +268,9 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
                   </>
               )}
               />
+               </div>
+                
              
-
               <div className='mt-6 w-full max-w-md flex flex-col items-center'>
               
               <div className={`${pinError.length ? "opacity-100":"text-transparent"} trc max-w-xs w-full opacity-0 px-4 py-2 text-xs text-green-800 rounded-lg ${!trans && "bg-red-50 text-red-800 dark:text-red-400"} bg-green-50 dark:bg-gray-900/40 dark:text-green-400 select-none`} role="alert">
@@ -274,12 +280,15 @@ const PinForm: React.FunctionComponent<IPinFormProps> = ({qid}) => {
                 </div>
 
               <div className='flex mt-4 flex-wrap w-full max-w-md justify-evenly'>
-           
+            {!isCompleted?
             <button onClick={()=>handleSubmit()} type="button" className={`${isSubmitting && "disabled"} w-full max-w-xs sm:max-w-sm flex justify-center text-white bg-blue-700 hover:bg-blue-800 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center dark:bg-blue-600 dark:hover:bg-blue-700 trc active:scale-[0.95]`}>
            {isSubmitting?"Submitting":"Submit"}
+
            {isExploding && <ConfettiExplosion force={0.8} duration={3000} particleCount={250} width={1600} onComplete={()=>setIsExploding(false)}/>}
-            </button>
-           
+            </button> 
+            :
+           <button onClick={()=>{router.push("/")}} className={`w-full max-w-xs sm:max-w-sm flex justify-center text-white bg-blue-700 hover:bg-blue-800 focus:outline-none  font-medium rounded-lg text-sm px-5 py-2.5 text-center items-center dark:bg-blue-600 dark:hover:bg-blue-700 trc active:scale-[0.95]`}>Go Back</button>
+            }
             </div>
             </div>
           </div>
