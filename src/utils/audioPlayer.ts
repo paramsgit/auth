@@ -9,34 +9,35 @@ export const playSuccessSound = () => {
     sound.play();
   };
 
-  const allVoicesObtained = new Promise(function(resolve, reject) {
-    let voices = window.speechSynthesis.getVoices();
-    if (voices.length !== 0) {
-      resolve(voices);
-    } else {
-      window.speechSynthesis.addEventListener("voiceschanged", function() {
-        voices = window.speechSynthesis.getVoices();
+  // const allVoicesObtained = new Promise(function(resolve, reject) {
+  //   let voices = window.speechSynthesis.getVoices();
+  //   if (voices.length !== 0) {
+  //     resolve(voices);
+  //   } else {
+  //     window.speechSynthesis.addEventListener("voiceschanged", function() {
+  //       voices = window.speechSynthesis.getVoices();
 
-        resolve(voices);
-      });
-    }
-  });
-  let Mvoice:any;
+  //       resolve(voices);
+  //     });
+  //   }
+  // });
+
+  // let Mvoice:any;
   
-  async function loadu(){
-     Mvoice= await allVoicesObtained.then(voices => Mvoice=voices);
-     console.log(Mvoice)
-  }
-  loadu()
+  // async function loadu(){
+  //    Mvoice= await allVoicesObtained.then(voices => Mvoice=voices);
+  //    console.log(Mvoice)
+  // }
+  // loadu()
 
   export async function rupeesSound(number:number|string) {
-    loadu()
+    // loadu()
     if(!number)
     return;
     return new Promise((resolve, reject) => {
         const msg = new SpeechSynthesisUtterance();
-        if(Mvoice)
-        msg.voice = Mvoice[3];
+        // if(Mvoice)
+        // msg.voice = Mvoice[3];
         msg.volume=1
         msg.text = `Rupees, ${number}`;
         msg.onend = resolve;
