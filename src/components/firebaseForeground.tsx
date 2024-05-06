@@ -4,11 +4,14 @@ import { getMessaging, onMessage } from 'firebase/messaging';
 import firebaseApp from '../utils/firebase';
 import { useEffect } from 'react';
 import { useTheme } from 'next-themes';
+import { useUIStore } from "@/lib/store";
 import { ToastContainer, toast,cssTransition } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { rupeesSound } from "@/utils/audioPlayer";
 export default function FcmTokenComp() {
   const {theme, setTheme} = useTheme()
+  const voice = useUIStore((state) => state.selectedVoice);
+  const isNotificationSound = useUIStore((state) => state.isNotificationSound);
   const { fcmToken, notificationPermissionStatus } = useFcmToken();
   const notify = (e:string) => {toast(`${e}`);};
   const notifySound=()=>{
@@ -22,9 +25,11 @@ export default function FcmTokenComp() {
         const unsubscribe = onMessage(messaging, async(payload) => {console.log('Foreground push notification received:', payload);
         if(payload.data)
         {notify(`${payload.data.title} ₹${payload.data.body}`)
-        await rupeesSound(payload.data.body)
-        var audio = new Audio('/phonePe.mp3');
-        audio.play();
+        console.log(voice)
+        if(isNotificationSound)
+        {await rupeesSound(payload.data.body,voice)
+        var audio = new Audio('/phonePe.mp3');}
+        // audio.play();
       }
         });
 
@@ -33,7 +38,7 @@ export default function FcmTokenComp() {
         };
       }
     }
-  }, [notificationPermissionStatus]);
+  }, [notificationPermissionStatus,voice,isNotificationSound]);
 
   return<> <ToastContainer
   position="bottom-right"

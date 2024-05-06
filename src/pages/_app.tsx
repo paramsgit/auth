@@ -12,8 +12,10 @@ export default function App({
 }:AppProps) 
 {
   const queryClient=new QueryClient()
-  const { setAllVoices } = useUIStore(state => ({
+  const { setAllVoices,setVoice,selectedVoice } = useUIStore(state => ({
     setAllVoices: state.setAllVoices,
+    setVoice: state.setVoice,
+    selectedVoice: state.selectedVoice,
   }));
   useEffect(() => {
     
@@ -32,7 +34,12 @@ export default function App({
     const getVoices=async()=>{
       let Mvoice:any= await allVoicesObtained
       if(Mvoice)
-      setAllVoices(Mvoice)
+      {setAllVoices(Mvoice)
+        const googleUkEnglishMaleVoice = Mvoice.find((vc:any) => vc.name === 'Google UK English Male');
+        console.log(googleUkEnglishMaleVoice);
+        if(!selectedVoice)
+        setVoice(googleUkEnglishMaleVoice)
+      }
     }
   
     if (global?.window){

@@ -30,14 +30,14 @@ export const playSuccessSound = () => {
   // }
   // loadu()
 
-  export async function rupeesSound(number:number|string) {
-    // loadu()
+  export async function rupeesSound(number:number|string,voice?:any) {
     if(!number)
     return;
     return new Promise((resolve, reject) => {
+      console.log("THis is rupeesSound")
         const msg = new SpeechSynthesisUtterance();
-        // if(Mvoice)
-        // msg.voice = Mvoice[3];
+        if(voice)
+        msg.voice = voice;
         msg.volume=1
         msg.text = `Rupees, ${number}`;
         msg.onend = resolve;

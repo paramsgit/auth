@@ -22,7 +22,7 @@ import { useUIStore } from "@/lib/store";
         try {
         let Mvoice:any= await allVoicesObtained
         if(Mvoice){
-            setAllVoices(Mvoice)
+            // setAllVoices(Mvoice)
         }
 
         } catch (error) {
