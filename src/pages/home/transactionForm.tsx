@@ -1,9 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
 import react, { useEffect, useState,useRef } from 'react';
-import { Scanner } from '@yudiel/react-qr-scanner';
+import dynamic from 'next/dynamic';
+// import { Scanner } from '@yudiel/react-qr-scanner';
 // import { QrReader } from 'react-qr-reader';
 
+const DynamicQrScanner = dynamic(() => import('@yudiel/react-qr-scanner').then(mod => mod.Scanner), {
+  ssr: false
+});
 const numberToText = require('number-to-text')
 require('number-to-text/converters/en-us');
 interface ITransactionFormProps {
@@ -189,7 +193,7 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss})
           <button type='button' onClick={()=>{handleFalse()}} className='z-[8] absolute top-[8px] right-[8px] w-7 h-7 rounded-full border-[1px] text-gray-200 border-gray-300 dark:text-gray-600 dark:border-gray-600'>x</button>
           }
         </div>
-      <Scanner styles={{ container:{width:"100%",opacity:`${isCameraOn?"1":"0"}`,borderRadius:"1rem"}}} enabled={isCameraOn} components={ {tracker: true}} options={{delayBetweenScanSuccess:1000}}
+      <DynamicQrScanner styles={{ container:{width:"100%",opacity:`${isCameraOn?"1":"0"}`,borderRadius:"1rem"}}} enabled={isCameraOn} components={ {tracker: true}} options={{delayBetweenScanSuccess:1000}}
                   onResult={(text, result) => {handleScan(text)}}
                   onError={(error) => console.log(error?.message)}
               />
