@@ -15,7 +15,15 @@ export default async function getUsers(req:NextApiRequest,res:NextApiResponse){
     
     try {
         await connectDb()
-        const allUsers= await User.find().select("-password")
+        const {query}=req.query;
+        if(!query)
+        return res.json({allUsers:[],message:"NO user found"})  
+        const allUsers= await User.find({
+            $or: [
+                { name: { $regex: query, $options: 'i' } }, // Case-insensitive regex match for name
+                { email: { $regex: query, $options: 'i' } } // Case-insensitive regex match for email
+            ]
+        }).select("-password");
         return res.json({allUsers})
     } catch (error) {
         console.log(error)

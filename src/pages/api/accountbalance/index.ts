@@ -9,7 +9,6 @@ export default async function balance(req: NextApiRequest, res: NextApiResponse)
         return res.status(401).json({error: "Please login"})
     }
     const userData=await verifyToken(userToken)
-    console.log(userData.user._id)
     if(!userData.user)
     return res.status(userData.status?userData.status:500).json({message:userData.message})
 

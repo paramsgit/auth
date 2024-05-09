@@ -1,7 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/router';
-import react, { useEffect, useState } from 'react';
+import react, { useEffect, useState,useRef } from 'react';
 import { Scanner } from '@yudiel/react-qr-scanner';
+// import { QrReader } from 'react-qr-reader';
 
 const numberToText = require('number-to-text')
 require('number-to-text/converters/en-us');
@@ -21,9 +22,7 @@ interface userTemplate{
 
 }
 
-const getAllUsers=async()=>{
-return (await fetch("http://localhost:3000/api/getUsers")).json()
-}
+
 
 const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss}) => {
 
@@ -34,14 +33,19 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss})
     const [agreedCheck,setagreedCheck]=useState(false)
     const [isSubmitted,setisSubmitted]=useState(false)
     const [isCameraOn,setisCameraOn]=useState(false)
+    const [showAlert,setshowAlert]=useState(false)
+    const [usersList, setusersList] = useState([]);
     const [amountInWords,setamountInWords]=useState("")
+    const [alertText,setalertText]=useState("")
     const router=useRouter();
     const queryClient=useQueryClient()
-    const usersQuery=useQuery({queryKey:['allUsers'],queryFn:getAllUsers})
-    const filteredData = usersQuery?.data?.allUsers?.filter((item:userTemplate) =>
-      item.name.toLowerCase().includes(ReceiverId.toLowerCase()) ||
-      item.email.toLowerCase().includes(ReceiverId.toLowerCase())
-    );
+    const qrRef = useRef(null);
+
+    const getAllUsers=async()=>{
+      const resp=await fetch(`/api/getUsers?query=${encodeURIComponent(ReceiverId)}`)
+      const userList=await resp.json()
+      setusersList(userList.allUsers)
+      }
     
     const handleFocus=()=>{setinputFocused(true);setinputFocused2(true)}
     const handleBlur=()=>{
@@ -49,7 +53,17 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss})
       setTimeout(() => { setinputFocused(false) }, 400);
       setTimeout(() => { setinputFocused2(false) }, 100);
   }
-    
+  
+    useEffect(() => {
+      const timer=setTimeout(()=>{
+        if(ReceiverId)
+        getAllUsers()
+      else setusersList([])
+      }, 400);
+      return () => {
+        clearTimeout(timer)
+      }
+    }, [ReceiverId])
     
     useEffect(() => {
       setisSubmitted(false)
@@ -78,6 +92,7 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss})
         router.push(`/payment/${result.queueItem?._id}`)
         }
       }
+      setisSubmitted(false)
       return result;
       } catch (error) {
         return error
@@ -88,8 +103,16 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss})
       e.preventDefault()
       setisSubmitted(true)
       setagreedCheck(false)
+      setshowAlert(false)
+      setalertText("")
       const transfer=await transferMoney();
-      console.log(transfer)
+      if(!transfer.response)
+      {setisSubmitted(false)
+        setalertText(transfer?.message)
+        setshowAlert(true)
+      }
+
+      console.log(transfer,transfer.response)
       
     }
 
@@ -117,18 +140,24 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss})
         }
       }
     }
+    const handleFalse=async()=>{
+      setisCameraOn(false)
+     
+    }
 
+ 
   return <>
   
 
 <form className="transactionForm max-w-sm my-4 md:my-8 p-8 rounded-xl bg-stone-100 dark:bg-zinc-900" onSubmit={(e)=>handleSubmit(e)}>
+  
   <div className="mb-5 max-w-full relative">
     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Id of Receiver</label>
     <input type="email" id="email" className="userIdInput bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@flowbite.com" value={ReceiverId} onChange={(e)=>{setReceiverId(e.target.value)}} onFocus={handleFocus} onBlur={handleBlur} role="presentation" autoComplete='off' required />
   
     <div className={`z-10 w-full p-1 mt-1 rounded-xl absolute text-white ${!inputFocused && 'pointer-events-none'} ${!inputFocused2 && 'opacity-0'} bigSugg bg-white dark:bg-[#212121] shadow dark:shadow-md`} >
 <ul className='userSuggestionsDiv bg-white dark:bg-[#212121] p-1  overflow-auto max-h-[210px] ' >
-  {filteredData?.map((u:userTemplate)=>{
+  {usersList.map((u:userTemplate)=>{
     return <li key={u._id} className='m-1 cursor-pointer' onClick={()=>setReceiverId(u.email)}>
     <div className='accountDiv m-4 rounded-full bg-white dark:bg-zinc-900 px-1 py-1 lg:border border-gray-200 dark:border-transparent'>
           <div className='flex items-center'>
@@ -157,13 +186,24 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss})
 </svg>
             Turn On</button>
          :
-          <button type='button' onClick={()=>{setisCameraOn(false)}} className='z-[8] absolute top-[8px] right-[8px] w-7 h-7 rounded-full border-[1px] text-gray-200 border-gray-300 dark:text-gray-600 dark:border-gray-600'>x</button>
+          <button type='button' onClick={()=>{handleFalse()}} className='z-[8] absolute top-[8px] right-[8px] w-7 h-7 rounded-full border-[1px] text-gray-200 border-gray-300 dark:text-gray-600 dark:border-gray-600'>x</button>
           }
         </div>
       <Scanner styles={{ container:{width:"100%",opacity:`${isCameraOn?"1":"0"}`,borderRadius:"1rem"}}} enabled={isCameraOn} components={ {tracker: true}} options={{delayBetweenScanSuccess:1000}}
                   onResult={(text, result) => {handleScan(text)}}
                   onError={(error) => console.log(error?.message)}
               />
+{/* {
+  isCameraOn &&
+<QrReader
+
+scanDelay={1100}
+        onResult={(result:any,error:any)=>handlePic(result,error)}
+        videoContainerStyle={{ width: '100%' }}
+        videoStyle={{ width: '100%',height: '100%',objectFit:'cover',borderRadius:'1rem' }}
+        constraints={{}}
+        ref={qrRef}
+      />} */}
        
 </div>
 </div>
@@ -174,7 +214,10 @@ const TransactionForm: React.FunctionComponent<ITransactionFormProps> = ({fnss})
   </div>
   
 
-  <div className='flex justify-center'>
+  <div className='flex flex-col justify-center'>
+  <div className={`${showAlert && `text-red-800 px-4 py-[0.6rem] border`}  ${!showAlert &&"h-0 text-transparent"} border-red-300  dark:text-red-400 bg-red-50 transition-all ease-in-out duration-300 p-0 text-sm  rounded-lg  dark:bg-gray-800 `} role="alert">
+         {alertText}
+      </div>
   <button type="submit" className={`${( !ReceiverId || !amount) && "disabled"} mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}>{isSubmitted?"Proceeding":"Proceed"} <span className={`mx-1 text-yellow-300 hidden`}> 4</span>
   </button>
   </div>

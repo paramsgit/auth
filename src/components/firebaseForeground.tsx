@@ -7,7 +7,7 @@ import { useTheme } from 'next-themes';
 import { useUIStore } from "@/lib/store";
 import { ToastContainer, toast,cssTransition } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { rupeesSound } from "@/utils/audioPlayer";
+import { celebritySound, rupeesSound } from "@/utils/audioPlayer";
 export default function FcmTokenComp() {
   const {theme, setTheme} = useTheme()
   const voice = useUIStore((state) => state.selectedVoice);
@@ -28,13 +28,14 @@ export default function FcmTokenComp() {
         console.log(voice)
         if(isNotificationSound)
         {await rupeesSound(payload.data.body,voice)
-        var audio = new Audio('/phonePe.mp3');}
-        // audio.play();
+        await celebritySound()
+      }
+        
       }
         });
 
         return () => {
-          unsubscribe(); // Unsubscribe from the onMessage event on cleanup
+          unsubscribe(); 
         };
       }
     }

@@ -47,13 +47,18 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
         </div>
         <div className='MoneyButtons px-4 md:px-10 flex '>
         <button onClick={showTrsForm} type="button" className="text-white bg-blue-700 hover:bg-blue-800  focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 min-w-[120px]">{!TrsForm? "Send Money":"Hide"}</button>
-        <button type="button" className="mx-3 py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-gray-100 hover:bg-gray-200 rounded-lg border border-gray-200 hover:text-blue-700 focus:z-10  focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Receive Money</button>
+        <button type="button" className="mx-3 py-2.5 px-5 me-2 mb-2 text-sm font-medium text-gray-900 focus:outline-none bg-gray-100 hover:bg-gray-200 rounded-lg border border-gray-200 hover:text-blue-700 focus:z-10  focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Check Balance</button>
 
         </div>
         
         <div className={` transactionForm px-4 md:p-1 lg:px-10 py-4 ${!TrsForm && 'hidden'}`}>
             <TransactionForm fnss={updateBalance}/>
         </div>
+
+        <div className={`transition-all duration-500 ease-in-out overflow-hidden ${TrsForm && 'h-0 opacity-0'}`}>
+          <img src={'/image2.png'} className='w-[85%]' alt="" />
+        </div>
+
         </div>
     </div>
     <div className="right w-full mb-8  md:w-1/2 flex justify-center items-center transition-all duration-500 ease-linear pt-10 md:pt-24">
@@ -77,7 +82,8 @@ const Front: React.FunctionComponent<IFrontProps> = (props) => {
           </div>
         </div>
         <div className='graph'>
-        <Graph/>
+         { session?.user?.email &&
+        <Graph email={session?.user?.email}/>}
         </div>
       </div>
     </div>

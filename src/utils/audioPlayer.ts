@@ -44,3 +44,13 @@ export const playSuccessSound = () => {
         window.speechSynthesis.speak(msg);
     });
 }
+  export async function celebritySound() {
+    return new Promise((resolve, reject) => {
+      const sound = new Howl({
+        src: ['/phonePe.mp3'], // Path to your audio file
+        autoplay: false, // Do not autoplay by default
+        volume: 1, // Set volume level (0 to 1)
+      });
+      sound.play();
+    });
+}

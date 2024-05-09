@@ -1,77 +1,38 @@
-import React,{useEffect, useRef} from 'react';
-import Chart from 'chart.js/auto';
-import { CategoryScale } from "chart.js";
-import { Line } from 'react-chartjs-2';
-interface IGraphProps {
-}
-Chart.register(CategoryScale);
-Chart.defaults.scale.grid.drawOnChartArea=false;
-const Graph: React.FunctionComponent<IGraphProps> = (props) => {
-    
-    // const mdata=[
-    //     {debit:true,amount:200,}
-    // ]
+import React,{useEffect, useRef, useState} from 'react';
 
-    const labels = ["j", "f", "mx", "a", "m", "j", "a", "m", "j"];
-    const data = {
-        labels: labels,
-        datasets: [
-          {
-            label: "My First dataset",
-            backgroundColor: "rgb(29, 78, 216)",
-            borderColor: "rgb(14, 95, 227)",
-            data: [100,500,200,400,50,630,200,400,100],
-            fill:false,
-            cubicInterpolationMode:'monotone',
-            tension:0.4
-          },
-        ],
-      };
+import {QRCodeCanvas} from 'qrcode.react';
+
+interface IGraphProps {
+  email:string|undefined|null
+}
+
+const Graph: React.FunctionComponent<IGraphProps> = (props) => {
+  const [qrValue,setqrValue]=useState<any>("")
+    const email=props?.email
+      useEffect(() => {
+        console.log(email)
+        setqrValue(email)
+      }, [email])
       
-      const CHARTOPTIONS = {
-        responsive: true,
-        plugins: {
-          legend: {
-            display: false,
-          },
-        },
-      
-        // Modify the axis by adding scales
-        scales: {
-          // to remove the labels
-          x: {
-            ticks: {
-              display: false,
-            },
-      
-            // to remove the x-axis grid
-            grid: {
-              drawBorder: false,
-              display: false,
-            },
-            border:{
-                display:false
-               }
-          },
-          // to remove the y-axis labels
-          y: {
-            ticks: {
-              display: false,
-              beginAtZero: true,
-            },
-            // to remove the y-axis grid
-            grid: {
-              drawBorder: false,
-              display: false,
-            },
-            border:{
-                display:false
-               }
-        }}}
   
   return <>
-  <div id='o098'>
- {/* <Line data={data} options={CHARTOPTIONS}/> */}
+  <div id='o098' className='flex justify-center p-2'>
+    <div className='pt-5 pb-2 px-6 border border-gray-300'>
+    {qrValue &&
+  <QRCodeCanvas
+   value={qrValue}
+   size={200}
+    />
+  }
+
+  <p className='flex justify-center items-center mt-2 text-gray-500'>
+  {/* <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" className="text-blue-600 mx-2 bi bi-camera-fill" viewBox="0 0 16 16">
+  <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
+  <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0"/>
+</svg> */}
+Scan QR to pay 
+</p>
+   </div>
   </div>
   </>;
 };
